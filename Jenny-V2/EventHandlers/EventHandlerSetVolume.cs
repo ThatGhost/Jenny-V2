@@ -43,6 +43,8 @@ namespace Jenny_V2.EventHandlers
 
         private void OnSpeechRegonised(string text)
         {
+            if (text.Trim() == "") return;
+
             _speechRecognizerService.SpeechRecognized -= OnSpeechRegonised;
             string number = Regex.Match(text, @"\d+").Value;
             if (number == "") MainWindow.onJenny("Sorry i didnt catch that try it again");

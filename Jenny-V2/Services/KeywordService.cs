@@ -28,6 +28,14 @@ namespace Jenny_V2.Services
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "volume", "lower" }, TextCommand.TurnVolumeDown));
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "volume", "set" }, TextCommand.SetVolume));
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "volume", "what" }, TextCommand.GetVolume));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "can", "you", "do" }, TextCommand.GetInfo));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "what", "you", "capable" }, TextCommand.GetInfo));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "pause" }, TextCommand.PlayPauseMedia));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "resume" }, TextCommand.PlayPauseMedia));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "play" }, TextCommand.PlayPauseMedia));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "shut", "down" }, TextCommand.Shutdown));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "power", "down" }, TextCommand.Shutdown));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "jenny", "stop" }, TextCommand.Shutdown));
         }
 
         public TextCommand? FindTextCommand(string scentence)
@@ -49,10 +57,15 @@ namespace Jenny_V2.Services
 
     public enum TextCommand
     {
+        GetInfo,
+        Shutdown,
         TurnVolumeUp,
         TurnVolumeDown,
         GetVolume,
         SetVolume,
         StartNewCSharpProject,
+        PlayPauseMedia,
+        NextTrack,
+        NPreviousTrack,
     }
 }

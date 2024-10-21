@@ -49,7 +49,7 @@ namespace Jenny_V2.Services
         {
             if (IsRegonizing) return;
 
-            speechRecognizer.StartContinuousRecognitionAsync();
+            Task.Run(async () => await speechRecognizer.StartContinuousRecognitionAsync());
             speechRecognizer.Recognized += OnSpeechRegognized;
             IsRegonizing = true;
         }
@@ -58,14 +58,17 @@ namespace Jenny_V2.Services
         {
             if (!IsRegonizing) return;
 
-            speechRecognizer.StopContinuousRecognitionAsync();
+            Task.Run(async () => await speechRecognizer.StopContinuousRecognitionAsync());
             speechRecognizer.Recognized -= OnSpeechRegognized;
             IsRegonizing = false;
         }
 
         public void Dispose()
         {
-            StopSpeechRegonition();
+            if (IsRegonizing)
+            {
+                Task.Run(async() => await speechRecognizer.StopContinuousRecognitionAsync());
+            }
             speechRecognizer?.Dispose();
         }
 

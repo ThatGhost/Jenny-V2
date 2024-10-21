@@ -1,18 +1,10 @@
 ﻿using System.ComponentModel;
-using System.Reflection.Emit;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
 using Jenny_V2.EventHandlers.Core;
 using Jenny_V2.Services;
+
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Jenny_V2
 {
@@ -25,28 +17,33 @@ namespace Jenny_V2
         private readonly ChatGPTService _chatGPTService;
         private readonly KeywordService _keywordService;
         private readonly EventFactory _eventFactory;
+        private readonly TextToSpeechService _textToSpeechService;
 
         public delegate void Log(string log);
         public static Log onLog;
         public static Log onJenny;
+        public static Log onLight;
         public static bool AutoAwnser = true;
 
         public MainWindow(
             SpeechRecognizerService speechRecognizerService, 
             ChatGPTService chatGPTService,
             KeywordService keywordService,
-            EventFactory eventFactory
+            EventFactory eventFactory,
+            TextToSpeechService textToSpeechService
             )
         {
             _speechRecognizerService = speechRecognizerService;
             _chatGPTService = chatGPTService;
             _keywordService = keywordService;
             _eventFactory = eventFactory;
+            _textToSpeechService = textToSpeechService;
 
             _speechRecognizerService.SpeechRecognized += OnSpeechRegonised;
             _chatGPTService.onAIResponse += OnAiResponse;
             onLog += LogOnWindow;
             onJenny += JennyOnWindow;
+            onLight += OnLight;
 
             InitializeComponent();
         }
@@ -58,8 +55,6 @@ namespace Jenny_V2
 
             if (_speechRecognizerService.IsRegonizing) CircleIsListening.Fill = (Brush)bc.ConvertFrom("Green")!;
             else CircleIsListening.Fill = (Brush)bc.ConvertFrom("Red")!;
-
-            IcnLoadingIcon.Spin = true;
         }
 
         private void ClosingWindow(object sender, CancelEventArgs e)
@@ -70,9 +65,10 @@ namespace Jenny_V2
 
         private void OnSpeechRegonised(string text)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
             {
-                LogOnWindow(text);
+                if (text.Trim() == "") return;
+                LstSpokenText.Items.Insert(0,text);
                 TextCommand? textCommand = _keywordService.FindTextCommand(text);
                 LogOnWindow(textCommand.ToString());
                 if (textCommand != null) _eventFactory.HandleEvent(textCommand.Value, text);
@@ -87,12 +83,13 @@ namespace Jenny_V2
         private void OnAiResponse(string text)
         {
             JennyOnWindow(text);
+            _textToSpeechService.Speak(text);
         }
 
         private void LogOnWindow(string text)
         {
             if (text == "") return;
-            Application.Current.Dispatcher.Invoke(() =>
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
             {
                 LstLogs.Items.Insert(0, text);
             });
@@ -101,10 +98,17 @@ namespace Jenny_V2
         private void JennyOnWindow(string text)
         {
             if (text == "") return;
-            Application.Current.Dispatcher.Invoke(() =>
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
             {
                 LstJennyText.Items.Insert(0, text);
             });
+        }
+
+        private void OnLight(string text)
+        {
+            BrushConverter bc = new BrushConverter();
+            if (text == "on") CircleIsListening.Fill = (Brush)bc.ConvertFrom("Green")!;
+            else CircleIsListening.Fill = (Brush)bc.ConvertFrom("Red")!;
         }
     }
 }

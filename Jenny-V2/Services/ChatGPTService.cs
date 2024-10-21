@@ -1,19 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-
-using Azure.AI.OpenAI;
-
-using Azure;
-
+﻿using System.IO;
 using Microsoft.Extensions.Configuration;
-
+using OpenAI;
 using OpenAI.Chat;
 
 namespace Jenny_V2.Services
@@ -23,7 +10,7 @@ namespace Jenny_V2.Services
         private IConfiguration Configuration { get; }
         public delegate void OnAIResponse(string response);
         public OnAIResponse onAIResponse;
-        private ChatClient _chatClient;
+        private OpenAIClient client;
 
         public ChatGPTService()
         {
@@ -33,29 +20,26 @@ namespace Jenny_V2.Services
 
             Configuration = builder.Build();
 
-            string AzureOpenAiKey = Configuration["OpenAi:Key"]!;
-            string AzureOpenAiUri = Configuration["OpenAi:URI"]!;
-
-            AzureOpenAIClient azureClient = new(
-            new Uri(AzureOpenAiUri),
-            new System.ClientModel.ApiKeyCredential(AzureOpenAiKey));
-
-            // This must match the custom deployment name you chose for your model
-            _chatClient = azureClient.GetChatClient("gpt-4");
+            string openAIKey = Configuration["OpenAI:Key"];
+            client = new OpenAIClient(openAIKey);
         }
 
         public async void GetAiResponse(string prompt)
         {
             try
             {
-                ChatCompletion completion = await _chatClient.CompleteChatAsync([new UserChatMessage(prompt)]);
+                var model = client.GetChatClient("gpt-4o-mini");
+                ChatCompletion response = model.CompleteChat(new ChatMessage[]
+                {
+                    new UserChatMessage(prompt)
+                });
 
-                if (onAIResponse != null && completion.FinishReason == ChatFinishReason.Stop) onAIResponse.Invoke(completion.Content[0].Text);
-
+                // Return the response content
+                if (onAIResponse != null) onAIResponse.Invoke(response.Content.First().Text);
             }
             catch (Exception ex)
             {
-                MainWindow.onLog("Rate Limited");
+                MainWindow.onLog("Something Went wrong" + ex.Message);
             }
         }
     }

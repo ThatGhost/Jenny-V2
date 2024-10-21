@@ -7,17 +7,22 @@ namespace Jenny_V2.EventHandlers
     public class EventHandlerGetVolume : IEventHandler
     {
         private readonly VolumeService _volumeService;
+        private readonly TextToSpeechService _textToSpeechService;
 
         public EventHandlerGetVolume(
-            VolumeService volumeService
+            VolumeService volumeService,
+            TextToSpeechService textToSpeechService
             )
         {
             _volumeService = volumeService;
+            _textToSpeechService = textToSpeechService;
         }
 
         public void Handle(string text)
         {
-            MainWindow.onLog("Volume: " + _volumeService.Volume);
+            double volume = _volumeService.Volume;
+            MainWindow.onLog("Volume: " + volume);
+            _textToSpeechService.Speak($"The volume is {volume}");
         }
     }
 }
