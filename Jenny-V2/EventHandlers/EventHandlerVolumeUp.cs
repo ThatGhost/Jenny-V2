@@ -2,7 +2,7 @@
 
 namespace Jenny_V2.EventHandlers
 {
-    [EventHandler(Services.TextCommand.TurnVolumeUp)]
+    [EventHandler(TextCommand.TurnVolumeUp)]
     public class EventHandlerVolumeUp : IEventHandler
     {
         private readonly VolumeService _volumeService;
