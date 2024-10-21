@@ -46,12 +46,17 @@ namespace Jenny_V2.Services
 
         public async void GetAiResponse(string prompt)
         {
-            ChatCompletion completion = await _chatClient.CompleteChatAsync(
-            [
-                new UserChatMessage(prompt),
-            ]);
+            try
+            {
+                ChatCompletion completion = await _chatClient.CompleteChatAsync([new UserChatMessage(prompt)]);
 
-            if (onAIResponse != null) onAIResponse.Invoke(completion.Content[0].Text);
+                if (onAIResponse != null && completion.FinishReason == ChatFinishReason.Stop) onAIResponse.Invoke(completion.Content[0].Text);
+
+            }
+            catch (Exception ex)
+            {
+                MainWindow.onLog("Rate Limited");
+            }
         }
     }
 }

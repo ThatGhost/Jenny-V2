@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:local="clr-namespace:Jenny_V2"
         mc:Ignorable="d"
         Closing="ClosingWindow"
@@ -21,5 +22,6 @@
         <ListBox x:Name="LstLogs" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="34,217,417,79"/>
         <Label Content="Logs" HorizontalAlignment="Left" Margin="34,191,0,0" VerticalAlignment="Top" Width="100"/>
         <Label Content="Jenny" HorizontalAlignment="Left" Margin="34,25,0,0" VerticalAlignment="Top" Height="73" Width="228" FontSize="48"/>
+        <fa:ImageAwesome x:Name="IcnLoadingIcon" Icon="Refresh" Height="48" Width="48" Margin="303,124,449,262" />
     </Grid>
 </Window>

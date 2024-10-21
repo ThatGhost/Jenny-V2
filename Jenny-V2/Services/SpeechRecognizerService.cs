@@ -47,6 +47,8 @@ namespace Jenny_V2.Services
 
         public void StartSpeechRegonition()
         {
+            if (IsRegonizing) return;
+
             speechRecognizer.StartContinuousRecognitionAsync();
             speechRecognizer.Recognized += OnSpeechRegognized;
             IsRegonizing = true;
@@ -54,12 +56,18 @@ namespace Jenny_V2.Services
 
         public void StopSpeechRegonition()
         {
+            if (!IsRegonizing) return;
+
             speechRecognizer.StopContinuousRecognitionAsync();
             speechRecognizer.Recognized -= OnSpeechRegognized;
             IsRegonizing = false;
         }
 
-        public void Dispose() => speechRecognizer?.Dispose();
+        public void Dispose()
+        {
+            StopSpeechRegonition();
+            speechRecognizer?.Dispose();
+        }
 
         private void OnSpeechRegognized(object sender, SpeechRecognitionEventArgs args)
         {
