@@ -7,20 +7,28 @@ namespace Jenny_V2.Services
 {
     public class ChatGPTService
     {
-        private IConfiguration Configuration { get; }
         public delegate void OnAIResponse(string response);
         public OnAIResponse onAIResponse;
-        private OpenAIClient client;
+        public bool AutoSpeak = true;
 
-        public ChatGPTService()
+        private OpenAIClient client;
+        private readonly TextToSpeechService _textToSpeechService;
+        
+
+        public ChatGPTService(
+            TextToSpeechService textToSpeechService
+            )
         {
+            _textToSpeechService = textToSpeechService;
+            onAIResponse += SpeakOnAiResponse;
+
             var builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())  // Set the base path to the current directory
             .AddUserSecrets<App>();                        // Load user secrets based on your UserSecretsId
 
-            Configuration = builder.Build();
+            IConfiguration configuration = builder.Build();
 
-            string openAIKey = Configuration["OpenAI:Key"];
+            string openAIKey = configuration["OpenAI:Key"];
             client = new OpenAIClient(openAIKey);
         }
 
@@ -41,6 +49,13 @@ namespace Jenny_V2.Services
             {
                 MainWindow.onLog("Something Went wrong" + ex.Message);
             }
+        }
+
+        private void SpeakOnAiResponse(string text)
+        {
+            if (!AutoSpeak) return;
+            MainWindow.onJenny(text);
+            _textToSpeechService.Speak(text);
         }
     }
 }

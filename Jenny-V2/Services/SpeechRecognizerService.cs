@@ -12,7 +12,6 @@ namespace Jenny_V2.Services
         private readonly ChatGPTService _chatGPTService;
         private readonly KeywordService _keywordService;
         private readonly EventFactory _eventFactory;
-        private readonly TextToSpeechService _textToSpeechService;
 
         private SpeechRecognizer speechRecognizer;
         public bool IsRegonizing { get; private set; }
@@ -24,16 +23,13 @@ namespace Jenny_V2.Services
         public SpeechRecognizerService(
                 KeywordService keywordService,
                 ChatGPTService chatGPTService,
-                EventFactory eventFactory,
-                TextToSpeechService textToSpeechService
+                EventFactory eventFactory
             )
         {
-            _textToSpeechService = textToSpeechService;
             _chatGPTService = chatGPTService;
             _keywordService = keywordService;
             _eventFactory = eventFactory;
 
-            _chatGPTService.onAIResponse += OnAiResponse;
             onSpeechRegognized += SpeechRegognized;
             InitializeSpeechRecognizer();
         }
@@ -121,12 +117,6 @@ namespace Jenny_V2.Services
                 if (text.ToLower().Contains("jenny") && AutoAwnser)
                     _chatGPTService.GetAiResponse($"your name is jenny.\nCan you respond to the user in a friendly and consise manner?\nuser- '{text}'");
             }
-        }
-
-        private void OnAiResponse(string text)
-        {
-            MainWindow.onJenny(text);
-            _textToSpeechService.Speak(text);
         }
     }
 }
