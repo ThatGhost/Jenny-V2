@@ -9,7 +9,6 @@ namespace Jenny_V2
     {
         public static void Install(IServiceCollection services)
         {
-            services.AddTransient<MainWindow>();
             services.AddSingleton<SpeechRecognizerService>();
             services.AddSingleton<ChatGPTService>();
             services.AddSingleton<TextToSpeechService>();
@@ -18,6 +17,7 @@ namespace Jenny_V2
             services.AddTransient<KeywordService>();
             services.AddTransient<VolumeService>();
             services.AddTransient<BrowserService>();
+            services.AddTransient<ResearchContextService>();
 
             services.AddTransient<EventHandlerVolumeUp>();
             services.AddTransient<EventHandlerVolumeDown>();
@@ -26,6 +26,8 @@ namespace Jenny_V2
             services.AddTransient<EventHandlerGetInfo>();
             services.AddTransient<EventHandlerPauseMedia>();
             services.AddTransient<EventHandlerShutdown>();
+            services.AddTransient<EventHandlerResearchContextNew>();
+            services.AddTransient<EventHandlerResearchContextOpen>();
         }
     }
 }

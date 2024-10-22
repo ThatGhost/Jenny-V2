@@ -108,6 +108,7 @@ namespace Jenny_V2.Services
         private void SpeechRegognized(string text)
         {
             if (text.Trim() == "" && AutoAwnser) return;
+            MainWindow.onUser(text);
 
             TextCommand? textCommand = _keywordService.FindTextCommand(text);
 
@@ -115,11 +116,12 @@ namespace Jenny_V2.Services
             {
                 _eventFactory.HandleEvent(textCommand.Value, text);
                 MainWindow.onLog(textCommand.ToString());
+                return;
             }
-            else
+            
+            if(text.ToLower().Contains("jenny") && AutoAwnser)
             {
-                if (text.ToLower().Contains("jenny") && AutoAwnser)
-                    _chatGPTService.GetAiResponse($"your name is jenny.\nCan you respond to the user in a friendly and consise manner?\nuser- '{text}'");
+                _chatGPTService.GetAiResponse($"your name is jenny.\nCan you respond to the user in a friendly and consise manner?\nuser- '{text}'");
             }
         }
     }

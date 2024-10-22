@@ -16,6 +16,7 @@ namespace Jenny_V2
         public delegate void Toggle(bool on);
         public static Log onLog;
         public static Log onJenny;
+        public static Log onUser;
         public static Toggle onToggleLight;
 
         public MainWindow(
@@ -26,6 +27,7 @@ namespace Jenny_V2
 
             onLog += LogOnWindow;
             onJenny += JennyOnWindow;
+            onUser += UserOnWindow;
             onToggleLight += toggleLight;
 
             InitializeComponent();
@@ -57,6 +59,15 @@ namespace Jenny_V2
             System.Windows.Application.Current.Dispatcher.Invoke(() =>
             {
                 LstJennyText.Items.Insert(0, text);
+            });
+        }
+
+        private void UserOnWindow(string text)
+        {
+            if (text == "") return;
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            {
+                LstSpokenText.Items.Insert(0, text);
             });
         }
 

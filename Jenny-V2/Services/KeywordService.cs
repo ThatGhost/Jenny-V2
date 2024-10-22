@@ -30,12 +30,20 @@ namespace Jenny_V2.Services
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "volume", "what" }, TextCommand.GetVolume));
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "can", "you", "do" }, TextCommand.GetInfo));
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "what", "you", "capable" }, TextCommand.GetInfo));
-            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "pause" }, TextCommand.PlayPauseMedia));
-            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "resume" }, TextCommand.PlayPauseMedia));
-            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "play" }, TextCommand.PlayPauseMedia));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "pause", "music" }, TextCommand.PlayPauseMedia));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "resume", "music" }, TextCommand.PlayPauseMedia));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "play", "music" }, TextCommand.PlayPauseMedia));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "pause", "media" }, TextCommand.PlayPauseMedia));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "resume", "media" }, TextCommand.PlayPauseMedia));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "play", "media" }, TextCommand.PlayPauseMedia));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "pause", "video" }, TextCommand.PlayPauseMedia));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "resume", "video" }, TextCommand.PlayPauseMedia));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "play", "video" }, TextCommand.PlayPauseMedia));
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "shut", "down" }, TextCommand.Shutdown));
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "power", "down" }, TextCommand.Shutdown));
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "jenny", "stop" }, TextCommand.Shutdown));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "new", "research" }, TextCommand.ResearchContextNew));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "open", "research" }, TextCommand.ResearchContextOpen));
         }
 
         public TextCommand? FindTextCommand(string scentence)
@@ -46,7 +54,7 @@ namespace Jenny_V2.Services
                 int inScentence = 0;
                 foreach (var keyword in kvp.Key)
                 {
-                    if(scentence.Contains(keyword))inScentence++;
+                    if(scentence.Contains(keyword)) inScentence++;
                 }
                 if (inScentence == kvp.Key.Count()) return kvp.Value; 
             }
@@ -63,9 +71,11 @@ namespace Jenny_V2.Services
         TurnVolumeDown,
         GetVolume,
         SetVolume,
-        StartNewCSharpProject,
         PlayPauseMedia,
-        NextTrack,
-        NPreviousTrack,
+        ResearchContextNew,
+        ResearchContextOpen,
+        ResearchContextGenerateResearch,
+        ResearchContextAwnsers,
+        ResearchContextUpdateMemory,
     }
 }
