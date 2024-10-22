@@ -32,7 +32,6 @@ namespace Jenny_V2.EventHandlers
                 _chatGPTService.GetAiResponse("Ask the user what the volume should be set to");
             }
             else SetVolume(int.Parse(number));
-
         }
 
         private void SetVolume(int volume)

@@ -20,8 +20,7 @@ namespace Jenny_V2.EventHandlers
 
         public void Handle(string text)
         {
-            MainWindow.onJenny("Volume control");
-            _chatGPTService.GetAiResponse("explain to the user that you can controll the volume and that your creator is working on the ability to pause and unpause music, keep it consice and friendly");
+            _chatGPTService.GetAiResponse("explain to the user that you can controll the volume, playing of media and help with research, keep it consice and friendly");
         }
     }
 }

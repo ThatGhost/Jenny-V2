@@ -2,6 +2,7 @@
 using Jenny_V2.EventHandlers;
 using Jenny_V2.Services;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace Jenny_V2
 {
@@ -9,6 +10,7 @@ namespace Jenny_V2
     {
         public static void Install(IServiceCollection services)
         {
+            services.AddSingleton<MainWindow>();
             services.AddSingleton<SpeechRecognizerService>();
             services.AddSingleton<ChatGPTService>();
             services.AddSingleton<TextToSpeechService>();
@@ -19,15 +21,14 @@ namespace Jenny_V2
             services.AddTransient<BrowserService>();
             services.AddTransient<ResearchContextService>();
 
-            services.AddTransient<EventHandlerVolumeUp>();
-            services.AddTransient<EventHandlerVolumeDown>();
-            services.AddTransient<EventHandlerSetVolume>();
-            services.AddTransient<EventHandlerGetVolume>();
-            services.AddTransient<EventHandlerGetInfo>();
-            services.AddTransient<EventHandlerPauseMedia>();
-            services.AddTransient<EventHandlerShutdown>();
-            services.AddTransient<EventHandlerResearchContextNew>();
-            services.AddTransient<EventHandlerResearchContextOpen>();
+            var handlerType = Assembly.GetExecutingAssembly()
+            .GetTypes()
+            .Where(t => typeof(IEventHandler).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
+
+            foreach(var type in handlerType)
+            {
+                services.AddTransient(type);
+            }
         }
     }
 }
