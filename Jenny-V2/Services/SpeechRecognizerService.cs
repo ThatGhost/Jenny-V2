@@ -1,36 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using Microsoft.CognitiveServices.Speech.Audio;
 using Microsoft.CognitiveServices.Speech;
 
 using Microsoft.Extensions.Configuration;
+using Jenny_V2.EventHandlers.Core;
 
 namespace Jenny_V2.Services
 {
     public class SpeechRecognizerService
     {
-        private IConfiguration Configuration { get; }
+        private readonly ChatGPTService _chatGPTService;
+        private readonly KeywordService _keywordService;
+        private readonly EventFactory _eventFactory;
+        private readonly TextToSpeechService _textToSpeechService;
+
         private SpeechRecognizer speechRecognizer;
         public bool IsRegonizing { get; private set; }
-        public delegate void SpeechRecognizerEventHandler(string text);
-        public SpeechRecognizerEventHandler SpeechRecognized;
+        public bool AutoAwnser = true;
 
-        public SpeechRecognizerService()
+        public delegate void OnSpeechRegognizedEvent(string text);
+        public OnSpeechRegognizedEvent onSpeechRegognized;
+
+        public SpeechRecognizerService(
+                KeywordService keywordService,
+                ChatGPTService chatGPTService,
+                EventFactory eventFactory,
+                TextToSpeechService textToSpeechService
+            )
+        {
+            _textToSpeechService = textToSpeechService;
+            _chatGPTService = chatGPTService;
+            _keywordService = keywordService;
+            _eventFactory = eventFactory;
+
+            _chatGPTService.onAIResponse += OnAiResponse;
+            onSpeechRegognized += SpeechRegognized;
+            InitializeSpeechRecognizer();
+        }
+
+        private void InitializeSpeechRecognizer()
         {
             IsRegonizing = false;
             var builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())  // Set the base path to the current directory
             .AddUserSecrets<App>();                        // Load user secrets based on your UserSecretsId
 
-            Configuration = builder.Build();
+            IConfiguration configuration = builder.Build();
 
-            var AzureSpeechKey = Configuration["Speech:Key"];
-            var AzureSpeechRegion = Configuration["Speech:Region"];
+            var AzureSpeechKey = configuration["Speech:Key"];
+            var AzureSpeechRegion = configuration["Speech:Region"];
 
             var speechConfig = SpeechConfig.FromSubscription(AzureSpeechKey, AzureSpeechRegion);
             speechConfig.SpeechRecognitionLanguage = "en-US";
@@ -52,6 +70,7 @@ namespace Jenny_V2.Services
             Task.Run(async () => await speechRecognizer.StartContinuousRecognitionAsync());
             speechRecognizer.Recognized += OnSpeechRegognized;
             IsRegonizing = true;
+            MainWindow.onToggleLight(IsRegonizing);
         }
 
         public void StopSpeechRegonition()
@@ -61,6 +80,7 @@ namespace Jenny_V2.Services
             Task.Run(async () => await speechRecognizer.StopContinuousRecognitionAsync());
             speechRecognizer.Recognized -= OnSpeechRegognized;
             IsRegonizing = false;
+            MainWindow.onToggleLight(IsRegonizing);
         }
 
         public void Dispose()
@@ -78,7 +98,7 @@ namespace Jenny_V2.Services
             switch (speechRecognitionResult.Reason)
             {
                 case ResultReason.RecognizedSpeech:
-                    if (SpeechRecognized != null && SpeechRecognized.GetInvocationList().Length > 0) SpeechRecognized.Invoke(speechRecognitionResult.Text);
+                    onSpeechRegognized.Invoke(speechRecognitionResult.Text);
                     break;
                 case ResultReason.NoMatch:
                     Console.WriteLine($"NOMATCH: Speech could not be recognized.");
@@ -87,6 +107,26 @@ namespace Jenny_V2.Services
                     var cancellation = CancellationDetails.FromResult(speechRecognitionResult);
                     throw new Exception(cancellation.ErrorDetails);
             }
+        }
+
+        private void SpeechRegognized(string text)
+        {
+            if (text.Trim() == "" && AutoAwnser) return;
+
+            TextCommand? textCommand = _keywordService.FindTextCommand(text);
+            MainWindow.onLog(textCommand.ToString());
+            if (textCommand != null) _eventFactory.HandleEvent(textCommand.Value, text);
+            else
+            {
+                if (text.ToLower().Contains("jenny") && AutoAwnser)
+                    _chatGPTService.GetAiResponse($"your name is jenny.\nCan you respond to the user in a friendly and consise manner?\nuser- '{text}'");
+            }
+        }
+
+        private void OnAiResponse(string text)
+        {
+            MainWindow.onJenny(text);
+            _textToSpeechService.Speak(text);
         }
     }
 }

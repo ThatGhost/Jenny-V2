@@ -17,6 +17,7 @@ namespace Jenny_V2
 
             services.AddTransient<KeywordService>();
             services.AddTransient<VolumeService>();
+            services.AddTransient<BrowserService>();
 
             services.AddTransient<EventHandlerVolumeUp>();
             services.AddTransient<EventHandlerVolumeDown>();

@@ -18,7 +18,6 @@ namespace Jenny_V2.EventHandlers
         public void Handle(string text)
         {
             _speechRecognizerService.StopSpeechRegonition();
-            MainWindow.onLight("off");
         }
     }
 }

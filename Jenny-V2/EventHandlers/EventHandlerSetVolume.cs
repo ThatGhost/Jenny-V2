@@ -27,7 +27,7 @@ namespace Jenny_V2.EventHandlers
             string number = Regex.Match(text, @"\d+").Value;
             if (number == "")
             {
-                MainWindow.AutoAwnser = false;
+                _speechRecognizerService.AutoAwnser = false;
                 _chatGPTService.onAIResponse += OnAiReponse;
                 _chatGPTService.GetAiResponse("Ask the user what the volume should be set to");
             }
@@ -45,18 +45,18 @@ namespace Jenny_V2.EventHandlers
         {
             if (text.Trim() == "") return;
 
-            _speechRecognizerService.SpeechRecognized -= OnSpeechRegonised;
+            _speechRecognizerService.onSpeechRegognized -= OnSpeechRegonised;
             string number = Regex.Match(text, @"\d+").Value;
             if (number == "") MainWindow.onJenny("Sorry i didnt catch that try it again");
             else SetVolume(int.Parse(number));
 
-            MainWindow.AutoAwnser = true;
+            _speechRecognizerService.AutoAwnser = true;
         }
 
         private void OnAiReponse(string text)
         {
             _chatGPTService.onAIResponse -= OnAiReponse;
-            _speechRecognizerService.SpeechRecognized += OnSpeechRegonised;
+            _speechRecognizerService.onSpeechRegognized += OnSpeechRegonised;
         }
     }
 }
