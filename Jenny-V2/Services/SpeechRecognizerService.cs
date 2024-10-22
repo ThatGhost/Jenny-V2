@@ -110,8 +110,12 @@ namespace Jenny_V2.Services
             if (text.Trim() == "" && AutoAwnser) return;
 
             TextCommand? textCommand = _keywordService.FindTextCommand(text);
-            MainWindow.onLog(textCommand.ToString());
-            if (textCommand != null) _eventFactory.HandleEvent(textCommand.Value, text);
+
+            if (textCommand != null)
+            {
+                _eventFactory.HandleEvent(textCommand.Value, text);
+                MainWindow.onLog(textCommand.ToString());
+            }
             else
             {
                 if (text.ToLower().Contains("jenny") && AutoAwnser)
