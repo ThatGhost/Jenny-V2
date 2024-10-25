@@ -22,7 +22,7 @@ namespace Jenny_V2.EventHandlers
         {
             double volume = _volumeService.Volume;
             MainWindow.onLog("Volume: " + volume);
-            _textToSpeechService.Speak($"The volume is {volume}");
+            _textToSpeechService.SpeakAsync($"The volume is {volume}");
         }
     }
 }

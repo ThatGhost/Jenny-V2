@@ -14,12 +14,13 @@ namespace Jenny_V2
             services.AddSingleton<SpeechRecognizerService>();
             services.AddSingleton<ChatGPTService>();
             services.AddSingleton<TextToSpeechService>();
-            services.AddTransient<EventFactory>();
 
+            services.AddTransient<EventFactory>();
             services.AddTransient<KeywordService>();
             services.AddTransient<VolumeService>();
             services.AddTransient<BrowserService>();
             services.AddTransient<ResearchContextService>();
+            services.AddSingleton<ZeroShotService>();
 
             var handlerType = Assembly.GetExecutingAssembly()
             .GetTypes()

@@ -46,7 +46,7 @@ namespace Jenny_V2.EventHandlers
             else
             {
                 _researchContextService.CreateNewResearchContext(response.ToLower().Replace(" ","_").Replace(".", ""));
-                _textToSpeechService.Speak($"a new research module has been created named {response}");
+                _textToSpeechService.SpeakAsync($"a new research module has been created named {response}");
                 MainWindow.onJenny($"a new research module has been created named {response}");
             }
         }
@@ -59,7 +59,7 @@ namespace Jenny_V2.EventHandlers
             text = text.ToLower().Replace("it ","").Replace("name ","").Replace("call ","").Replace(".","");
             _researchContextService.CreateNewResearchContext(text.Replace(" ", "_"));
 
-            _textToSpeechService.Speak($"a new research module has been created named {text}");
+            _textToSpeechService.SpeakAsync($"a new research module has been created named {text}");
             MainWindow.onJenny($"a new research module has been created named {text}");
         }
     }

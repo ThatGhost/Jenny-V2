@@ -41,6 +41,29 @@ namespace Jenny_V2.Services
             var response = textToSpeechClient.SynthesizeSpeech(input, voiceSelectionParams, audioConfig);
 
             // Use MemoryStream to play audio
+            using (var ms = new MemoryStream(response.AudioContent.ToByteArray()))
+            {
+                using (var waveStream = new WaveFileReader(ms))
+                {
+                    using (var waveOut = new WaveOutEvent())
+                    {
+                        waveOut.Init(waveStream);
+                        waveOut.Play();
+                        while (waveOut.PlaybackState == PlaybackState.Playing)
+                        {
+                            Thread.Sleep(100); // Wait for the audio to finish playing
+                        }
+                    }
+                }
+            }
+        }
+
+        public void SpeakAsync(string text)
+        {
+            var input = new SynthesisInput { Text = text };
+            var response = textToSpeechClient.SynthesizeSpeech(input, voiceSelectionParams, audioConfig);
+
+            // Use MemoryStream to play audio
             Task.Run(() =>
             {
                 using (var ms = new MemoryStream(response.AudioContent.ToByteArray()))

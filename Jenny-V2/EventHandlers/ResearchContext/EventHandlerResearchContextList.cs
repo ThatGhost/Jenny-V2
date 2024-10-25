@@ -23,20 +23,17 @@ namespace Jenny_V2.EventHandlers
 
         public void Handle(string text)
         {
-            List<string> research = _researchContextService.GetAllResearchContextFolders();
+            List<string> research = _researchContextService.GetAllResearchContexts();
 
             int maxAmountOfResearchToSpeak = 7;
             string toSpeakText = @$"You currently have {research.Count()} research context's. namely ";
-            foreach (var context in research)
-            {
-                string contextname = new DirectoryInfo(context+"\\").Name;
-                contextname = contextname.Replace("_"," ");
-                toSpeakText += $"{contextname}, ";
-            }
+
+            // parse
+            foreach (var context in research) toSpeakText += $"{context.Replace("_", " ")}, ";
 
             if (maxAmountOfResearchToSpeak < research.Count) toSpeakText += ", and are some more I havent listed yet.";
 
-            _textToSpeechService.Speak(toSpeakText);
+            _textToSpeechService.SpeakAsync(toSpeakText);
             MainWindow.onJenny(toSpeakText);
         }
     }

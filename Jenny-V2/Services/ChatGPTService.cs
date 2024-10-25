@@ -55,7 +55,7 @@ namespace Jenny_V2.Services
         {
             if (!AutoSpeak) return;
             MainWindow.onJenny(text);
-            _textToSpeechService.Speak(text);
+            _textToSpeechService.SpeakAsync(text);
         }
     }
 }
