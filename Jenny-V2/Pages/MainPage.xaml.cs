@@ -49,10 +49,7 @@ namespace Jenny_V2.Pages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //_speechRecognizerService.ToggleSpeechRegonition();
-            NavigationService ns = NavigationService.GetNavigationService(this);
-            DictationsPage dictations = new DictationsPage();
-            ns.Navigate(dictations);
+            _speechRecognizerService.ToggleSpeechRegonition();
         }
 
         private void LogOnWindow(string text)

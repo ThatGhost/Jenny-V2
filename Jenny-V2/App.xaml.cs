@@ -18,12 +18,13 @@ namespace Jenny_V2
             _serviceProvider = serviceCollection.BuildServiceProvider();
         }
 
+        [STAThread]
         protected override void OnStartup(StartupEventArgs e)
         {
+            base.OnStartup(e);
+
             var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
             MainWindow.Show();
-
-            base.OnStartup(e);
         }
     }
 }

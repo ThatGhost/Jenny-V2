@@ -9,8 +9,8 @@
       Title="Dictations">
 
     <Grid>
-        <Button Content="Stop Dictations" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="50" Width="124"/>
-        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,83,10,10"/>
+        <Button Content="Stop Dictations" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="50" Width="124" Click="Button_Click"/>
+        <ListBox x:Name="LstDictation" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,83,10,10"/>
 
     </Grid>
 </Page>

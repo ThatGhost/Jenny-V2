@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using Jenny_V2.Services;
+
 namespace Jenny_V2.Pages
 {
     /// <summary>
@@ -20,9 +22,33 @@ namespace Jenny_V2.Pages
     /// </summary>
     public partial class DictationsPage : Page
     {
-        public DictationsPage()
+        private readonly MainWindow _mainWindow;
+        private readonly SpeechRecognizerService _speechRecognizerService;
+
+        public delegate void AddToList(string text);
+        public static AddToList addToList;
+
+        public DictationsPage(
+            MainWindow mainWindow,
+            SpeechRecognizerService speechRecognizerService
+            )
         {
+            _mainWindow = mainWindow;
+            _speechRecognizerService = speechRecognizerService;
+
             InitializeComponent();
+            addToList += AddToDictationList;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            _mainWindow.Navigate<MainPage>();
+            _speechRecognizerService.AutoAwnser = true;
+        }
+
+        private void AddToDictationList(string text)
+        {
+            LstDictation.Items.Add(text);
         }
     }
 }
