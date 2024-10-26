@@ -1,4 +1,6 @@
 ﻿using System.Text.RegularExpressions;
+
+using Jenny_V2.Pages;
 using Jenny_V2.Services;
 
 namespace Jenny_V2.EventHandlers
@@ -37,7 +39,7 @@ namespace Jenny_V2.EventHandlers
         private void SetVolume(int volume)
         {
             _volumeService.SetVolume(volume);
-            MainWindow.onLog("volume: " + _volumeService.Volume);
+            MainPage.onLog("volume: " + _volumeService.Volume);
         }
 
         private void OnSpeechRegonised(string text)
@@ -46,7 +48,7 @@ namespace Jenny_V2.EventHandlers
 
             _speechRecognizerService.onSpeechRegognized -= OnSpeechRegonised;
             string number = Regex.Match(text, @"\d+").Value;
-            if (number == "") MainWindow.onJenny("Sorry i didnt catch that try it again");
+            if (number == "") MainPage.onJenny("Sorry i didnt catch that try it again");
             else SetVolume(int.Parse(number));
 
             _speechRecognizerService.AutoAwnser = true;

@@ -1,4 +1,5 @@
-﻿using Jenny_V2.Services;
+﻿using Jenny_V2.Pages;
+using Jenny_V2.Services;
 
 using static Google.Rpc.Context.AttributeContext.Types;
 
@@ -47,7 +48,7 @@ namespace Jenny_V2.EventHandlers
             {
                 _researchContextService.CreateNewResearchContext(response.ToLower().Replace(" ","_").Replace(".", ""));
                 _textToSpeechService.SpeakAsync($"a new research module has been created named {response}");
-                MainWindow.onJenny($"a new research module has been created named {response}");
+                MainPage.onJenny($"a new research module has been created named {response}");
             }
         }
 
@@ -60,7 +61,7 @@ namespace Jenny_V2.EventHandlers
             _researchContextService.CreateNewResearchContext(text.Replace(" ", "_"));
 
             _textToSpeechService.SpeakAsync($"a new research module has been created named {text}");
-            MainWindow.onJenny($"a new research module has been created named {text}");
+            MainPage.onJenny($"a new research module has been created named {text}");
         }
     }
 }

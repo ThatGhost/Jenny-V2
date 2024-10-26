@@ -1,4 +1,6 @@
 ﻿using System.Text.RegularExpressions;
+
+using Jenny_V2.Pages;
 using Jenny_V2.Services;
 
 namespace Jenny_V2.EventHandlers
@@ -21,7 +23,7 @@ namespace Jenny_V2.EventHandlers
         public void Handle(string text)
         {
             double volume = _volumeService.Volume;
-            MainWindow.onLog("Volume: " + volume);
+            MainPage.onLog("Volume: " + volume);
             _textToSpeechService.SpeakAsync($"The volume is {volume}");
         }
     }

@@ -1,4 +1,5 @@
-﻿using Jenny_V2.Services;
+﻿using Jenny_V2.Pages;
+using Jenny_V2.Services;
 
 namespace Jenny_V2.EventHandlers
 {
@@ -14,7 +15,7 @@ namespace Jenny_V2.EventHandlers
         public void Handle(string text)
         {
             _volumeService.VolumeUp();
-            MainWindow.onLog("volume: " + _volumeService.Volume);
+            MainPage.onLog("volume: " + _volumeService.Volume);
         }
     }
 }

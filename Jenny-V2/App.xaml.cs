@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Jenny_V2.Services;
 using Jenny_V2.EventHandlers;
 using Jenny_V2.EventHandlers.Core;
+using Jenny_V2.Pages;
 
 namespace Jenny_V2
 {
@@ -20,7 +21,7 @@ namespace Jenny_V2
         protected override void OnStartup(StartupEventArgs e)
         {
             var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-            mainWindow.Show();
+            MainWindow.Show();
 
             base.OnStartup(e);
         }

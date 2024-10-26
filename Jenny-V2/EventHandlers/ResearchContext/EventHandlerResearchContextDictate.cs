@@ -7,13 +7,13 @@ using static Google.Rpc.Context.AttributeContext.Types;
 
 namespace Jenny_V2.EventHandlers
 {
-    [EventHandler(TextCommand.ResearchContextList)]
-    public class EventHandlerResearchContextList : IEventHandler
+    [EventHandler(TextCommand.ResearchContextDictate)]
+    public class EventHandlerResearchContextDictate : IEventHandler
     {
         private readonly ResearchContextService _researchContextService;
         private readonly TextToSpeechService _textToSpeechService;
 
-        public EventHandlerResearchContextList(
+        public EventHandlerResearchContextDictate(
             ResearchContextService researchContextService,
             TextToSpeechService textToSpeechService
             )
@@ -24,16 +24,7 @@ namespace Jenny_V2.EventHandlers
 
         public void Handle(string text)
         {
-            List<string> research = _researchContextService.GetAllResearchContexts();
-
-            int maxAmountOfResearchToSpeak = 7;
-            string toSpeakText = @$"You currently have {research.Count()} research context's. namely ";
-
-            // parse
-            foreach (var context in research) toSpeakText += $"{context.Replace("_", " ")}, ";
-
-            if (maxAmountOfResearchToSpeak < research.Count) toSpeakText += ", and are some more I havent listed yet.";
-
+            string toSpeakText = "I am listening";
             _textToSpeechService.SpeakAsync(toSpeakText);
             MainPage.onJenny(toSpeakText);
         }

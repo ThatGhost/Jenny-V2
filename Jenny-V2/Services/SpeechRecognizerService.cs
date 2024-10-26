@@ -4,6 +4,7 @@ using Microsoft.CognitiveServices.Speech;
 
 using Microsoft.Extensions.Configuration;
 using Jenny_V2.EventHandlers.Core;
+using Jenny_V2.Pages;
 
 namespace Jenny_V2.Services
 {
@@ -66,7 +67,7 @@ namespace Jenny_V2.Services
             Task.Run(async () => await speechRecognizer.StartContinuousRecognitionAsync());
             speechRecognizer.Recognized += OnSpeechRegognized;
             IsRegonizing = true;
-            MainWindow.onToggleLight(IsRegonizing);
+            MainPage.onToggleLight(IsRegonizing);
         }
 
         public void StopSpeechRegonition()
@@ -76,7 +77,7 @@ namespace Jenny_V2.Services
             Task.Run(async () => await speechRecognizer.StopContinuousRecognitionAsync());
             speechRecognizer.Recognized -= OnSpeechRegognized;
             IsRegonizing = false;
-            MainWindow.onToggleLight(IsRegonizing);
+            MainPage.onToggleLight(IsRegonizing);
         }
 
         public void Dispose()
@@ -108,14 +109,14 @@ namespace Jenny_V2.Services
         private void SpeechRegognized(string text)
         {
             if (text.Trim() == "" && AutoAwnser) return;
-            MainWindow.onUser(text);
+            MainPage.onUser(text);
 
             TextCommand? textCommand = _keywordService.FindTextCommand(text);
 
             if (textCommand != null)
             {
                 _eventFactory.HandleEvent(textCommand.Value, text);
-                MainWindow.onLog(textCommand.ToString());
+                MainPage.onLog(textCommand.ToString());
                 return;
             }
             

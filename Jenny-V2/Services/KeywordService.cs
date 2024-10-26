@@ -70,6 +70,7 @@ namespace Jenny_V2.Services
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "list", "research" }, TextCommand.ResearchContextList));
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "open", "research", "folder" }, TextCommand.ResearchContextOpenFolder));
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "open", "research" }, TextCommand.ResearchContextOpen));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "set", "research" }, TextCommand.ResearchContextOpen));
         }
     }
 
@@ -82,14 +83,17 @@ namespace Jenny_V2.Services
         GetVolume,
         SetVolume,
         PlayPauseMedia,
+
         ResearchContextNew,
         ResearchContextList,
         ResearchContextOpenFolder,
         ResearchContextOpen,
         ResearchContextClose,
-        ResearchContextGenerateResearch,
         ResearchContextDictate,
+        ResearchContextClean,
+        ResearchContextSummerize,
         ResearchContextAwnsers,
+        ResearchContextGenerateResearch,
         ResearchContextUpdateMemory,
     }
 }

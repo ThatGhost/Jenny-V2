@@ -6,21 +6,27 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Google.Api;
+using System.Xml.Linq;
+using Jenny_V2.Pages;
 
 namespace Jenny_V2.Services
 {
     public class ResearchContextService
     {
         private readonly string _folderPath;
-        private bool _inContext = false;
         private string? _currentResearchContext = null;
 
         private readonly TextToSpeechService _textToSpeechService;
+        private readonly KeywordService _keywordService;
 
         public ResearchContextService(
-            TextToSpeechService textToSpeechService
+            TextToSpeechService textToSpeechService,
+            KeywordService keywordService
             ) 
         {
+            _textToSpeechService = textToSpeechService;
+            _keywordService = keywordService;
+            
             string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
             _folderPath = Path.Combine(appdata, ".Jenny");
@@ -28,8 +34,6 @@ namespace Jenny_V2.Services
 
             _folderPath = Path.Combine(_folderPath, "ResearchContexts");
             Directory.CreateDirectory(_folderPath);
-
-            _textToSpeechService = textToSpeechService;
         }
 
         public void CreateNewResearchContext(string name)
@@ -40,18 +44,32 @@ namespace Jenny_V2.Services
 
         public void SetResearchContext(string name)
         {
-            if(_inContext) return;
+            if(_currentResearchContext != null) return;
             
             _currentResearchContext = name;
+            AddResearchContextKeywords();
 
             string toSpeakText = $"The research context '{name}' has been opened";
             _textToSpeechService.SpeakAsync(toSpeakText);
-            MainWindow.onJenny(toSpeakText);
+            MainPage.onJenny(toSpeakText);
         }
 
         public void OpenResearchContextFolder()
         {
             Process.Start("explorer.exe", _folderPath);
+        }
+
+        public void CloseResearchContext()
+        {
+            if(_currentResearchContext == null) return;
+
+            _keywordService.ResetKeywords();
+
+            string toSpeakText = $"The research context '{_currentResearchContext}' has been closed";
+            _textToSpeechService.SpeakAsync(toSpeakText);
+            MainPage.onJenny(toSpeakText);
+
+            _currentResearchContext = null;
         }
 
         public List<string> GetAllResearchContextFolders()
@@ -64,6 +82,14 @@ namespace Jenny_V2.Services
         {
             List<string> result = GetAllResearchContextFolders();
             return result.Select(r => new DirectoryInfo(r + "\\").Name).ToList();
+        }
+
+        private void AddResearchContextKeywords()
+        {
+            _keywordService.AddTextCommand(new string[] { "close", "research" }, TextCommand.ResearchContextClose);
+            _keywordService.AddTextCommand(new string[] { "stop", "research" }, TextCommand.ResearchContextClose);
+            _keywordService.AddTextCommand(new string[] { "start", "dictation"}, TextCommand.ResearchContextDictate);
+            _keywordService.AddTextCommand(new string[] { "start", "listening"}, TextCommand.ResearchContextDictate);
         }
     }
 }

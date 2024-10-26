@@ -1,4 +1,7 @@
 ﻿using System.IO;
+
+using Jenny_V2.Pages;
+
 using Microsoft.Extensions.Configuration;
 using OpenAI;
 using OpenAI.Chat;
@@ -47,14 +50,14 @@ namespace Jenny_V2.Services
             }
             catch (Exception ex)
             {
-                MainWindow.onLog("Something Went wrong" + ex.Message);
+                MainPage.onLog("Something Went wrong" + ex.Message);
             }
         }
 
         private void SpeakOnAiResponse(string text)
         {
             if (!AutoSpeak) return;
-            MainWindow.onJenny(text);
+            MainPage.onJenny(text);
             _textToSpeechService.SpeakAsync(text);
         }
     }

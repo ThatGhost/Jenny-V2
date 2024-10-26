@@ -1,5 +1,6 @@
 ﻿using System.IO;
 
+using Jenny_V2.Pages;
 using Jenny_V2.Services;
 
 using static Jenny_V2.Services.ChatGPTService;
@@ -60,7 +61,7 @@ namespace Jenny_V2.EventHandlers
 
             string toSpeakText = "Which one would you like to open?";
             _textToSpeechService.SpeakAsync(toSpeakText);
-            MainWindow.onJenny(toSpeakText);
+            MainPage.onJenny(toSpeakText);
 
             _zeroShotService.AddPossibilities(researchContexts.Select(r => r.Replace("_", " ")).ToList());
             awnser = _zeroShotService.Listen().Replace(" ", "_");
@@ -71,7 +72,7 @@ namespace Jenny_V2.EventHandlers
             {
                 toSpeakText = "Sorry i didnt get that. Can you try again from the beginning?";
                 _textToSpeechService.SpeakAsync(toSpeakText);
-                MainWindow.onJenny(toSpeakText);
+                MainPage.onJenny(toSpeakText);
             }
         }
 
@@ -91,7 +92,7 @@ namespace Jenny_V2.EventHandlers
             if (maxAmountOfResearchToSpeak < research.Count) toSpeakText += "and are some more I havent listed yet.";
 
             _textToSpeechService.Speak(toSpeakText);
-            MainWindow.onJenny(toSpeakText);
+            MainPage.onJenny(toSpeakText);
         }
     }
 }
