@@ -18,10 +18,12 @@ namespace Jenny_V2.Services
 
         private readonly TextToSpeechService _textToSpeechService;
         private readonly KeywordService _keywordService;
+        private readonly MainPageService _mainPageService;
 
         public ResearchContextService(
             TextToSpeechService textToSpeechService,
-            KeywordService keywordService
+            KeywordService keywordService,
+            MainPageService mainPageService
             ) 
         {
             _textToSpeechService = textToSpeechService;
@@ -51,7 +53,7 @@ namespace Jenny_V2.Services
 
             string toSpeakText = $"The research context '{name}' has been opened";
             _textToSpeechService.SpeakAsync(toSpeakText);
-            MainPage.onJenny(toSpeakText);
+            _mainPageService.JennyLog(toSpeakText);
         }
 
         public void OpenResearchContextFolder()
@@ -67,7 +69,7 @@ namespace Jenny_V2.Services
 
             string toSpeakText = $"The research context '{_currentResearchContext}' has been closed";
             _textToSpeechService.SpeakAsync(toSpeakText);
-            MainPage.onJenny(toSpeakText);
+            _mainPageService.JennyLog(toSpeakText);
 
             _currentResearchContext = null;
         }

@@ -7,15 +7,18 @@ namespace Jenny_V2.EventHandlers.DefaultsHandlers
     public class EventHandlerVolumeDown : IEventHandler
     {
         private readonly VolumeService _volumeService;
-        public EventHandlerVolumeDown(VolumeService volumeService)
+        private readonly MainPageService _mainPageService;
+
+        public EventHandlerVolumeDown(VolumeService volumeService, MainPageService mainPageService)
         {
             _volumeService = volumeService;
+            _mainPageService = mainPageService;
         }
 
         public void Handle(string text)
         {
             _volumeService.VolumeDown();
-            MainPage.onLog("volume: " + _volumeService.Volume);
+            _mainPageService.Log("volume: " + _volumeService.Volume);
         }
     }
 }

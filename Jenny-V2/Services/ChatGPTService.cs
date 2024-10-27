@@ -16,13 +16,17 @@ namespace Jenny_V2.Services
 
         private OpenAIClient client;
         private readonly TextToSpeechService _textToSpeechService;
+        private readonly MainPageService _mainPageService;
         
 
         public ChatGPTService(
-            TextToSpeechService textToSpeechService
+            TextToSpeechService textToSpeechService,
+            MainPageService mainPageService
             )
         {
             _textToSpeechService = textToSpeechService;
+            _mainPageService = mainPageService;
+
             onAIResponse += SpeakOnAiResponse;
 
             var builder = new ConfigurationBuilder()
@@ -50,14 +54,14 @@ namespace Jenny_V2.Services
             }
             catch (Exception ex)
             {
-                MainPage.onLog("Something Went wrong" + ex.Message);
+                _mainPageService.Log("Something Went wrong" + ex.Message);
             }
         }
 
         private void SpeakOnAiResponse(string text)
         {
             if (!AutoSpeak) return;
-            MainPage.onJenny(text);
+            _mainPageService.JennyLog(text);
             _textToSpeechService.SpeakAsync(text);
         }
     }

@@ -12,14 +12,17 @@ namespace Jenny_V2.EventHandlers
     {
         private readonly ResearchContextService _researchContextService;
         private readonly TextToSpeechService _textToSpeechService;
+        private readonly MainPageService _mainPageService;
 
         public EventHandlerResearchContextList(
             ResearchContextService researchContextService,
-            TextToSpeechService textToSpeechService
+            TextToSpeechService textToSpeechService,
+            MainPageService mainPageService
             )
         {
             _researchContextService = researchContextService;
             _textToSpeechService = textToSpeechService;
+            _mainPageService = mainPageService;
         }
 
         public void Handle(string text)
@@ -35,7 +38,7 @@ namespace Jenny_V2.EventHandlers
             if (maxAmountOfResearchToSpeak < research.Count) toSpeakText += ", and are some more I havent listed yet.";
 
             _textToSpeechService.SpeakAsync(toSpeakText);
-            MainPage.onJenny(toSpeakText);
+            _mainPageService.JennyLog(toSpeakText);
         }
     }
 }

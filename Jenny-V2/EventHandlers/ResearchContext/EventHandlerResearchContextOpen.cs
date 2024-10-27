@@ -15,13 +15,15 @@ namespace Jenny_V2.EventHandlers
         private readonly SpeechRecognizerService _speechRecognizerService;
         private readonly ZeroShotService _zeroShotService;
         private readonly TextToSpeechService _textToSpeechService;
+        private readonly MainPageService _mainPageService;
 
         public EventHandlerResearchContextOpen(
             ResearchContextService researchContextService,
             ChatGPTService chatGPTService,
             SpeechRecognizerService speechRecognizerService,
             ZeroShotService zeroShotService,
-            TextToSpeechService textToSpeechService
+            TextToSpeechService textToSpeechService,
+            MainPageService mainPageService
             )
         {
             _researchContextService = researchContextService;
@@ -29,6 +31,7 @@ namespace Jenny_V2.EventHandlers
             _speechRecognizerService = speechRecognizerService;
             _zeroShotService = zeroShotService;
             _textToSpeechService = textToSpeechService;
+            _mainPageService = mainPageService;
         }
 
         public void Handle(string text)
@@ -61,7 +64,7 @@ namespace Jenny_V2.EventHandlers
 
             string toSpeakText = "Which one would you like to open?";
             _textToSpeechService.SpeakAsync(toSpeakText);
-            MainPage.onJenny(toSpeakText);
+            _mainPageService.JennyLog(toSpeakText);
 
             _zeroShotService.AddPossibilities(researchContexts.Select(r => r.Replace("_", " ")).ToList());
             awnser = _zeroShotService.Listen().Replace(" ", "_");
@@ -72,7 +75,7 @@ namespace Jenny_V2.EventHandlers
             {
                 toSpeakText = "Sorry i didnt get that. Can you try again from the beginning?";
                 _textToSpeechService.SpeakAsync(toSpeakText);
-                MainPage.onJenny(toSpeakText);
+                _mainPageService.JennyLog(toSpeakText);
             }
         }
 
@@ -92,7 +95,7 @@ namespace Jenny_V2.EventHandlers
             if (maxAmountOfResearchToSpeak < research.Count) toSpeakText += "and are some more I havent listed yet.";
 
             _textToSpeechService.Speak(toSpeakText);
-            MainPage.onJenny(toSpeakText);
+            _mainPageService.JennyLog(toSpeakText);
         }
     }
 }

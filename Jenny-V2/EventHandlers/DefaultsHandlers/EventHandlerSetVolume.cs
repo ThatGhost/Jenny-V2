@@ -11,19 +11,19 @@ namespace Jenny_V2.EventHandlers.DefaultsHandlers
         private readonly VolumeService _volumeService;
         private readonly ChatGPTService _chatGPTService;
         private readonly SpeechRecognizerService _speechRecognizerService;
-        private readonly MainPage _mainPage;
+        private readonly MainPageService _mainPageService;
 
         public EventHandlerSetVolume(
             VolumeService volumeService,
             ChatGPTService chatGPTService,
             SpeechRecognizerService speechRecognizerService,
-            MainPage mainPage
+            MainPageService mainPageService
             )
         {
             _volumeService = volumeService;
             _chatGPTService = chatGPTService;
             _speechRecognizerService = speechRecognizerService;
-            _mainPage = mainPage;
+            _mainPageService = mainPageService;
         }
 
         public void Handle(string text)
@@ -41,7 +41,7 @@ namespace Jenny_V2.EventHandlers.DefaultsHandlers
         private void SetVolume(int volume)
         {
             _volumeService.SetVolume(volume);
-            MainPage.onLog("volume: " + _volumeService.Volume);
+            _mainPageService.Log("volume: " + _volumeService.Volume);
         }
 
         private void OnSpeechRegonised(string text)
@@ -50,7 +50,7 @@ namespace Jenny_V2.EventHandlers.DefaultsHandlers
 
             _speechRecognizerService.onSpeechRegognized -= OnSpeechRegonised;
             string number = Regex.Match(text, @"\d+").Value;
-            if (number == "") _mainPage.JennyOnWindow("Sorry i didnt catch that try it again");
+            if (number == "") _mainPageService.JennyLog("Sorry i didnt catch that try it again");
             else SetVolume(int.Parse(number));
 
             _speechRecognizerService.AutoAwnser = true;

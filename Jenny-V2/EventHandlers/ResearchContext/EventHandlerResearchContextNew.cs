@@ -12,18 +12,21 @@ namespace Jenny_V2.EventHandlers
         private readonly ChatGPTService _chatGPTService;
         private readonly SpeechRecognizerService _speechRecognizerService;
         private readonly TextToSpeechService _textToSpeechService;
+        private readonly MainPageService _mainPageService;
 
         public EventHandlerResearchContextNew(
             ResearchContextService researchContextService,
             ChatGPTService chatGPTService,
             SpeechRecognizerService speechRecognizerService,
-            TextToSpeechService textToSpeechService
+            TextToSpeechService textToSpeechService,
+            MainPageService mainPageService
             )
         {
             _researchContextService = researchContextService;
             _chatGPTService = chatGPTService;
             _speechRecognizerService = speechRecognizerService;
             _textToSpeechService = textToSpeechService;
+            _mainPageService = mainPageService;
         }
 
         public void Handle(string text)
@@ -48,7 +51,7 @@ namespace Jenny_V2.EventHandlers
             {
                 _researchContextService.CreateNewResearchContext(response.ToLower().Replace(" ","_").Replace(".", ""));
                 _textToSpeechService.SpeakAsync($"a new research module has been created named {response}");
-                MainPage.onJenny($"a new research module has been created named {response}");
+                _mainPageService.JennyLog($"a new research module has been created named {response}");
             }
         }
 
@@ -61,7 +64,7 @@ namespace Jenny_V2.EventHandlers
             _researchContextService.CreateNewResearchContext(text.Replace(" ", "_"));
 
             _textToSpeechService.SpeakAsync($"a new research module has been created named {text}");
-            MainPage.onJenny($"a new research module has been created named {text}");
+            _mainPageService.JennyLog($"a new research module has been created named {text}");
         }
     }
 }

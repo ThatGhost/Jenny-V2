@@ -9,20 +9,23 @@ namespace Jenny_V2.EventHandlers.DefaultsHandlers
     {
         private readonly VolumeService _volumeService;
         private readonly TextToSpeechService _textToSpeechService;
+        private readonly MainPageService _mainPageService;
 
         public EventHandlerGetVolume(
             VolumeService volumeService,
-            TextToSpeechService textToSpeechService
+            TextToSpeechService textToSpeechService,
+            MainPageService mainPageService
             )
         {
             _volumeService = volumeService;
             _textToSpeechService = textToSpeechService;
+            _mainPageService = mainPageService;
         }
 
         public void Handle(string text)
         {
             double volume = _volumeService.Volume;
-            MainPage.onLog("Volume: " + volume);
+            _mainPageService.Log("Volume: " + volume);
             _textToSpeechService.SpeakAsync($"The volume is {volume}");
         }
     }

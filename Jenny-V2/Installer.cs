@@ -19,6 +19,7 @@ namespace Jenny_V2
             services.AddSingleton<ZeroShotService>();
             services.AddSingleton<ResearchContextService>();
             services.AddSingleton<DictationService>();
+            services.AddSingleton<MainPageService>();
 
             services.AddTransient<EventFactory>();
             services.AddTransient<VolumeService>();

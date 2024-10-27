@@ -31,16 +31,10 @@ namespace Jenny_V2.Pages
         private readonly SpeechRecognizerService _speechRecognizerService;
         private readonly VoiceActivationService _voiceActivationService;
 
-        public delegate void Log(string log);
-        public delegate void Toggle(bool on);
-        public static Log onLog;
-        public static Log onJenny;
-        public static Log onUser;
-        public static Toggle onToggleLight;
-
         public MainPage(
             SpeechRecognizerService speechRecognizerService,
-            VoiceActivationService voiceActivationService
+            VoiceActivationService voiceActivationService,
+            MainPageService mainPageService
             )
         {
             _speechRecognizerService = speechRecognizerService;
@@ -48,10 +42,10 @@ namespace Jenny_V2.Pages
 
             _voiceActivationService.VoiceActivationStart();
 
-            onLog += LogOnWindow;
-            onJenny += JennyOnWindow;
-            onUser += UserOnWindow;
-            onToggleLight += UpdateLight;
+            mainPageService.JennyLog += JennyLog;
+            mainPageService.LogNormal += Log;
+            mainPageService.UserLog += UserLog;
+            mainPageService.UpdateLightOn += UpdateLight;
 
             InitializeComponent();
         }
@@ -62,7 +56,7 @@ namespace Jenny_V2.Pages
             _voiceActivationService.ToggleVoiceActivation();
         }
 
-        public void LogOnWindow(string text)
+        public void Log(string text)
         {
             if (text == "") return;
             System.Windows.Application.Current.Dispatcher.Invoke(() =>
@@ -71,7 +65,7 @@ namespace Jenny_V2.Pages
             });
         }
 
-        public void JennyOnWindow(string text)
+        public void JennyLog(string text)
         {
             if (text == "") return;
             System.Windows.Application.Current.Dispatcher.Invoke(() =>
@@ -80,7 +74,7 @@ namespace Jenny_V2.Pages
             });
         }
 
-        public void UserOnWindow(string text)
+        public void UserLog(string text)
         {
             if (text == "") return;
             System.Windows.Application.Current.Dispatcher.Invoke(() =>

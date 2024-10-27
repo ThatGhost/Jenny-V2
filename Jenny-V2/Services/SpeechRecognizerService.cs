@@ -13,6 +13,7 @@ namespace Jenny_V2.Services
         private readonly ChatGPTService _chatGPTService;
         private readonly KeywordService _keywordService;
         private readonly EventFactory _eventFactory;
+        private readonly MainPageService _mainPageService;
 
         private SpeechRecognizer speechRecognizer;
         public bool IsRegonizing { get; private set; }
@@ -23,13 +24,15 @@ namespace Jenny_V2.Services
 
         public SpeechRecognizerService(
                 KeywordService keywordService,
-                ChatGPTService chatGPTService,
-                EventFactory eventFactory
+                EventFactory eventFactory,
+                MainPageService mainPageService,
+                ChatGPTService chatGPTService
             )
         {
             _chatGPTService = chatGPTService;
             _keywordService = keywordService;
             _eventFactory = eventFactory;
+            _mainPageService = mainPageService;
 
             onSpeechRegognized += SpeechRegognized;
             InitializeSpeechRecognizer();
@@ -76,7 +79,7 @@ namespace Jenny_V2.Services
             Task.Run(async () => await speechRecognizer.StartContinuousRecognitionAsync());
             speechRecognizer.Recognized += OnSpeechRegognized;
             IsRegonizing = true;
-            MainPage.onToggleLight(IsRegonizing);
+            _mainPageService.UpdateLight(IsRegonizing);
         }
 
         public void StopSpeechRegonition()
@@ -86,7 +89,7 @@ namespace Jenny_V2.Services
             Task.Run(async () => await speechRecognizer.StopContinuousRecognitionAsync());
             speechRecognizer.Recognized -= OnSpeechRegognized;
             IsRegonizing = false;
-            MainPage.onToggleLight(IsRegonizing);
+            _mainPageService.UpdateLight(IsRegonizing);
         }
 
         private void OnSpeechRegognized(object sender, SpeechRecognitionEventArgs args)
@@ -109,14 +112,14 @@ namespace Jenny_V2.Services
         private void SpeechRegognized(string text)
         {
             if (text.Trim() == "" || !AutoAwnser) return;
-            MainPage.onUser(text);
+            _mainPageService.UserLog(text);
 
             TextCommand? textCommand = _keywordService.FindTextCommand(text);
 
             if (textCommand != null)
             {
                 _eventFactory.HandleEvent(textCommand.Value, text);
-                MainPage.onLog(textCommand.ToString());
+                _mainPageService.Log(textCommand.ToString());
                 return;
             }
             
