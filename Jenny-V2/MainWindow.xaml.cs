@@ -33,12 +33,6 @@ namespace Jenny_V2
             MainFrame.Navigate(MainPage);
         }
 
-        private void ClosingWindow(object sender, CancelEventArgs e)
-        {
-            _speechRecognizerService.StopSpeechRegonition();
-            _speechRecognizerService.Dispose();
-        }
-
         public void Navigate<T>() where T : Page
         {
             Dispatcher.Invoke(() =>

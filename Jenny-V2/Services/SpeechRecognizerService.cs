@@ -35,6 +35,15 @@ namespace Jenny_V2.Services
             InitializeSpeechRecognizer();
         }
 
+        ~SpeechRecognizerService()
+        {
+            if (IsRegonizing)
+            {
+                Task.Run(async () => await speechRecognizer.StopContinuousRecognitionAsync());
+            }
+            speechRecognizer?.Dispose();
+        }
+
         private void InitializeSpeechRecognizer()
         {
             IsRegonizing = false;
@@ -78,15 +87,6 @@ namespace Jenny_V2.Services
             speechRecognizer.Recognized -= OnSpeechRegognized;
             IsRegonizing = false;
             MainPage.onToggleLight(IsRegonizing);
-        }
-
-        public void Dispose()
-        {
-            if (IsRegonizing)
-            {
-                Task.Run(async() => await speechRecognizer.StopContinuousRecognitionAsync());
-            }
-            speechRecognizer?.Dispose();
         }
 
         private void OnSpeechRegognized(object sender, SpeechRecognitionEventArgs args)

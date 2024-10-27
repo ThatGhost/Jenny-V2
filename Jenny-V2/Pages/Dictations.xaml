@@ -9,8 +9,13 @@
       Title="Dictations">
 
     <Grid>
-        <Button Content="Stop Dictations" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="50" Width="124" Click="Button_Click"/>
-        <ListBox x:Name="LstDictation" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,83,10,10"/>
+        <Button Content="Back" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="50" Width="124" Click="Button_Click"/>
+        <Button x:Name="btnToggleDictation" Content="Stop Dictations" HorizontalAlignment="Left" Margin="143,10,0,0" VerticalAlignment="Top" Height="50" Width="124" Click="ToggleDictation_Click"/>
+        <Ellipse x:Name="IsListening" HorizontalAlignment="Left" Height="50" Margin="292,10,0,0" Stroke="Black" VerticalAlignment="Top" Width="50" Fill="#FF2FED15"/>
+        <RichTextBox x:Name="TxtBoxDictation" Margin="10,83,10,10">
+            <FlowDocument>
+            </FlowDocument>
+        </RichTextBox>
 
     </Grid>
 </Page>

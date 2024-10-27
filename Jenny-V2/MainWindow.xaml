@@ -6,7 +6,6 @@
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:local="clr-namespace:Jenny_V2"
         mc:Ignorable="d"
-        Closing="ClosingWindow"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>

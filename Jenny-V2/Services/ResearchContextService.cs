@@ -84,6 +84,12 @@ namespace Jenny_V2.Services
             return result.Select(r => new DirectoryInfo(r + "\\").Name).ToList();
         }
 
+        public string GetCurrentResearchContextFolder()
+        {
+            if (_currentResearchContext == null) return _folderPath;
+            return Path.Combine(_folderPath, _currentResearchContext);
+        }
+
         private void AddResearchContextKeywords()
         {
             _keywordService.AddTextCommand(new string[] { "close", "research" }, TextCommand.ResearchContextClose);
