@@ -1,9 +1,8 @@
 ﻿using System.Text.RegularExpressions;
-
 using Jenny_V2.Pages;
 using Jenny_V2.Services;
 
-namespace Jenny_V2.EventHandlers
+namespace Jenny_V2.EventHandlers.DefaultsHandlers
 {
     [EventHandler(TextCommand.GetVolume)]
     public class EventHandlerGetVolume : IEventHandler

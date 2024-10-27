@@ -6,9 +6,6 @@ using Jenny_V2.Services;
 
 namespace Jenny_V2.Pages
 {
-    /// <summary>
-    /// Interaction logic for Dictations.xaml
-    /// </summary>
     public partial class DictationsPage : Page
     {
         private readonly DictationService _dictationService;

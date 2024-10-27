@@ -45,7 +45,11 @@ namespace Jenny_V2.Services
             _speechRecognizerService.onSpeechRegognized += OnDictation;
 
             IsDictating = true;
-            if (OnDictactionHeard != null) OnDictactionHeard(GetDictationText());
+            if (OnDictactionHeard != null)
+            {
+                DictationText = GetDictationText();
+                OnDictactionHeard(DictationText);
+            }
         }
 
         public void Stop()

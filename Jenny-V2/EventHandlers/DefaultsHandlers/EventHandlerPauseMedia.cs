@@ -3,7 +3,7 @@
 using WindowsInput;
 using WindowsInput.Native;
 
-namespace Jenny_V2.EventHandlers
+namespace Jenny_V2.EventHandlers.DefaultsHandlers
 {
     [EventHandler(TextCommand.PlayPauseMedia)]
     public class EventHandlerPauseMedia : IEventHandler

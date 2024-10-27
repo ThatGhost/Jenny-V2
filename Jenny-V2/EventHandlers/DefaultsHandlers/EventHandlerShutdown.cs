@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using Jenny_V2.Services;
 
-namespace Jenny_V2.EventHandlers
+namespace Jenny_V2.EventHandlers.DefaultsHandlers
 {
     [EventHandler(TextCommand.Shutdown)]
     public class EventHandlerShutdown : IEventHandler

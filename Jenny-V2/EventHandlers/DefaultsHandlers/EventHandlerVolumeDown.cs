@@ -1,20 +1,20 @@
 ﻿using Jenny_V2.Pages;
 using Jenny_V2.Services;
 
-namespace Jenny_V2.EventHandlers
+namespace Jenny_V2.EventHandlers.DefaultsHandlers
 {
-    [EventHandler(TextCommand.TurnVolumeUp)]
-    public class EventHandlerVolumeUp : IEventHandler
+    [EventHandler(TextCommand.TurnVolumeDown)]
+    public class EventHandlerVolumeDown : IEventHandler
     {
         private readonly VolumeService _volumeService;
-        public EventHandlerVolumeUp(VolumeService volumeService)
+        public EventHandlerVolumeDown(VolumeService volumeService)
         {
             _volumeService = volumeService;
         }
 
         public void Handle(string text)
         {
-            _volumeService.VolumeUp();
+            _volumeService.VolumeDown();
             MainPage.onLog("volume: " + _volumeService.Volume);
         }
     }
