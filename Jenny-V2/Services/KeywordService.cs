@@ -21,10 +21,20 @@ namespace Jenny_V2.Services
             keywords.Add(new KeyValuePair<string[], TextCommand>(keywordStrings, command));
         }
 
+        public void AddTextCommand(KeyValuePair<string[], TextCommand> command)
+        {
+            keywords.Add(command);
+        }
+
         public void ResetKeywords()
         {
             keywords.Clear();
             AddDefaultKeywords();
+        }
+
+        public void RemoveKeyWordsOnReference(KeyValuePair<string[], TextCommand> pair)
+        {
+            if(keywords.Contains(pair)) keywords.Remove(pair);
         }
 
         public TextCommand? FindTextCommand(string scentence)
@@ -90,10 +100,9 @@ namespace Jenny_V2.Services
         ResearchContextOpen,
         ResearchContextClose,
         ResearchContextDictate,
-        ResearchContextClean,
-        ResearchContextSummerize,
-        ResearchContextAwnsers,
+        ResearchContextDictateClean,
+        ResearchContextDictateSummerize,
         ResearchContextGenerateResearch,
-        ResearchContextUpdateMemory,
+        ResearchContextAwnsers,
     }
 }

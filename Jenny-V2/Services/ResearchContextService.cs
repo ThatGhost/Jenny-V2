@@ -95,6 +95,7 @@ namespace Jenny_V2.Services
             _keywordService.AddTextCommand(new string[] { "close", "research" }, TextCommand.ResearchContextClose);
             _keywordService.AddTextCommand(new string[] { "stop", "research" }, TextCommand.ResearchContextClose);
             _keywordService.AddTextCommand(new string[] { "start", "dictation"}, TextCommand.ResearchContextDictate);
+            _keywordService.AddTextCommand(new string[] { "start", "dictating"}, TextCommand.ResearchContextDictate);
             _keywordService.AddTextCommand(new string[] { "start", "listening"}, TextCommand.ResearchContextDictate);
         }
     }

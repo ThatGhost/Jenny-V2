@@ -39,6 +39,11 @@ namespace Jenny_V2
             {
                 var page = _serviceProvider.GetRequiredService<T>();
                 MainFrame.Navigate(page);
+
+                if (page is IPageNavigatedTo pageNavigation)
+                {
+                    pageNavigation.OnPageNavigatedTo();
+                }
             }, DispatcherPriority.ApplicationIdle);
         }
     }
