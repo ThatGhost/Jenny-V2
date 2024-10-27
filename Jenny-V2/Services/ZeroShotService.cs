@@ -5,32 +5,50 @@ namespace Jenny_V2.Services
 {
     public class ZeroShotService
     {
-        private SpeechRecognitionEngine speechRecognitionEngine;
+        private SpeechRecognitionEngine _speechRecognitionEngine;
         private List<string> _possibleCommands = new();
-        public delegate void onSpeechRegonised(string awnser);
+        public delegate void onSpeechRegonised(SpeechRecognizedEventArgs args);
         public onSpeechRegonised OnSpeechRegonised;
 
-        public ZeroShotService() 
+        public ZeroShotService()
         {
-            speechRecognitionEngine = new SpeechRecognitionEngine(new System.Globalization.CultureInfo("en-US"));
+            _speechRecognitionEngine = new SpeechRecognitionEngine(new System.Globalization.CultureInfo("en-US"));
             _possibleCommands.Add("---");
 
-            speechRecognitionEngine.SetInputToDefaultAudioDevice();
-            speechRecognitionEngine.LoadGrammar(BuildGrammar());
+            _speechRecognitionEngine.SetInputToDefaultAudioDevice();
+            _speechRecognitionEngine.LoadGrammar(BuildGrammar());
         }
 
         ~ZeroShotService()
         {
-            speechRecognitionEngine?.Dispose();
+            _speechRecognitionEngine.RecognizeAsyncStop();
+            _speechRecognitionEngine?.Dispose();
         }
 
-        public string Listen() => speechRecognitionEngine.Recognize().Text;
+        public string Listen() => _speechRecognitionEngine.Recognize().Text;
+
+        public void ListenAsyncStart()
+        {
+            _speechRecognitionEngine.RecognizeAsync();
+            _speechRecognitionEngine.SpeechRecognized += OnSpeechRecognizedAsync;
+        }
+
+        public void ListenAsyncStop()
+        {
+            _speechRecognitionEngine.RecognizeAsyncStop();
+            _speechRecognitionEngine.SpeechRecognized -= OnSpeechRecognizedAsync;
+        }
+
+        private void OnSpeechRecognizedAsync(object? sender, SpeechRecognizedEventArgs args)
+        {
+            OnSpeechRegonised?.Invoke(args);
+        }
 
         public void AddPossibilities(List<string> values)
         {
             _possibleCommands = values;
-            speechRecognitionEngine.UnloadAllGrammars();
-            speechRecognitionEngine.LoadGrammar(BuildGrammar());
+            _speechRecognitionEngine.UnloadAllGrammars();
+            _speechRecognitionEngine.LoadGrammar(BuildGrammar());
         }
 
         public string FuzzySearch(string spokenSentence, List<string> projectNames)

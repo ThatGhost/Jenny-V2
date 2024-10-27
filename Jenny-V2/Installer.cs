@@ -24,6 +24,7 @@ namespace Jenny_V2
             services.AddTransient<VolumeService>();
             services.AddTransient<BrowserService>();
             services.AddTransient<FileService>();
+            services.AddTransient<VoiceActivationService>();
 
             InstallEventHandlers(services);
             InstallUI(services);

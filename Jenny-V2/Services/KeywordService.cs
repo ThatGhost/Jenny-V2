@@ -74,6 +74,7 @@ namespace Jenny_V2.Services
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "resume", "video" }, TextCommand.PlayPauseMedia));
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "play", "video" }, TextCommand.PlayPauseMedia));
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "shut", "down" }, TextCommand.Shutdown));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "shutdown" }, TextCommand.Shutdown));
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "power", "down" }, TextCommand.Shutdown));
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "jenny", "stop" }, TextCommand.Shutdown));
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "new", "research" }, TextCommand.ResearchContextNew));

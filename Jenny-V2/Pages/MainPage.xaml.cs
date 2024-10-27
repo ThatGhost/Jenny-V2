@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Speech.Recognition;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,6 +17,10 @@ using System.Windows.Shapes;
 
 using Jenny_V2.Services;
 
+using Microsoft.CognitiveServices.Speech;
+
+using static System.Net.Mime.MediaTypeNames;
+
 namespace Jenny_V2.Pages
 {
     /// <summary>
@@ -24,6 +29,7 @@ namespace Jenny_V2.Pages
     public partial class MainPage : Page
     {
         private readonly SpeechRecognizerService _speechRecognizerService;
+        private readonly VoiceActivationService _voiceActivationService;
 
         public delegate void Log(string log);
         public delegate void Toggle(bool on);
@@ -33,16 +39,19 @@ namespace Jenny_V2.Pages
         public static Toggle onToggleLight;
 
         public MainPage(
-            SpeechRecognizerService speechRecognizerService
+            SpeechRecognizerService speechRecognizerService,
+            VoiceActivationService voiceActivationService
             )
         {
-            InitializeComponent();
             _speechRecognizerService = speechRecognizerService;
+            _voiceActivationService = voiceActivationService;
+
+            _voiceActivationService.VoiceActivationStart();
 
             onLog += LogOnWindow;
             onJenny += JennyOnWindow;
             onUser += UserOnWindow;
-            onToggleLight += toggleLight;
+            onToggleLight += UpdateLight;
 
             InitializeComponent();
         }
@@ -50,9 +59,10 @@ namespace Jenny_V2.Pages
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             _speechRecognizerService.ToggleSpeechRegonition();
+            _voiceActivationService.ToggleVoiceActivation();
         }
 
-        private void LogOnWindow(string text)
+        public void LogOnWindow(string text)
         {
             if (text == "") return;
             System.Windows.Application.Current.Dispatcher.Invoke(() =>
@@ -61,7 +71,7 @@ namespace Jenny_V2.Pages
             });
         }
 
-        private void JennyOnWindow(string text)
+        public void JennyOnWindow(string text)
         {
             if (text == "") return;
             System.Windows.Application.Current.Dispatcher.Invoke(() =>
@@ -70,7 +80,7 @@ namespace Jenny_V2.Pages
             });
         }
 
-        private void UserOnWindow(string text)
+        public void UserOnWindow(string text)
         {
             if (text == "") return;
             System.Windows.Application.Current.Dispatcher.Invoke(() =>
@@ -79,12 +89,15 @@ namespace Jenny_V2.Pages
             });
         }
 
-        private void toggleLight(bool on)
+        public void UpdateLight(bool on)
         {
-            BrushConverter bc = new BrushConverter();
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
+            {
+                BrushConverter bc = new BrushConverter();
 
-            if (on) CircleIsListening.Fill = (Brush)bc.ConvertFrom("Green")!;
-            else CircleIsListening.Fill = (Brush)bc.ConvertFrom("Red")!;
+                if (on) CircleIsListening.Fill = (Brush)bc.ConvertFrom("Green")!;
+                else CircleIsListening.Fill = (Brush)bc.ConvertFrom("Red")!;
+            });
         }
     }
 }

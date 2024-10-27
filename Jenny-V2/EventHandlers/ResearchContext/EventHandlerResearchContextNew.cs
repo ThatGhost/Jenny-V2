@@ -30,7 +30,7 @@ namespace Jenny_V2.EventHandlers
         {
             _chatGPTService.onAIResponse += OnAiResponse;
             _chatGPTService.AutoSpeak = false;
-            _chatGPTService.GetAiResponse($"in this scentence is there a name for a research? if yes respond only with the name, if not respond only with 'no'. \n-'{text}'");
+            _chatGPTService.GetAiResponse($"in this scentence is there a name for a research in the next scentence? if yes respond only with the name, if not respond only with 'no'.\nscentence: '{text}'");
         }
 
         private void OnAiResponse(string response)
