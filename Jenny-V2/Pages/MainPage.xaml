@@ -9,14 +9,18 @@
       Title="MainPage">
 
     <Grid Background="#FFFAFAFA">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="373*"/>
+            <ColumnDefinition Width="427*"/>
+        </Grid.ColumnDefinitions>
         <Button Content="Toggle Listening" HorizontalAlignment="Left" Margin="36,117,0,0" VerticalAlignment="Top" Height="59" Width="140" Click="Button_Click"/>
         <Ellipse x:Name="CircleIsListening" Fill="red" HorizontalAlignment="Left" Height="59" Margin="202,117,0,0" Stroke="Black" VerticalAlignment="Top" Width="60"/>
-        <ListBox x:Name="LstSpokenText" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="425,48,26,248"/>
-        <Label Content="Your Awnsers" HorizontalAlignment="Left" Margin="425,17,0,0" VerticalAlignment="Top" Width="130"/>
-        <Label Content="Jenny's Awnsers" HorizontalAlignment="Left" Margin="425,199,0,0" VerticalAlignment="Top" Width="100"/>
-        <ListBox x:Name="LstJennyText" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="425,225,26,24"/>
-        <ListBox x:Name="LstLogs" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="34,225,417,24"/>
-        <Label Content="Logs" HorizontalAlignment="Left" Margin="34,199,0,0" VerticalAlignment="Top" Width="100"/>
+        <ListBox x:Name="LstSpokenText" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="28,48,28,0" Height="154" VerticalAlignment="Top" Grid.Column="1"/>
+        <Label Content="Your Awnsers" Margin="36,17,0,0" Height="26" VerticalAlignment="Top" Grid.Column="1" HorizontalAlignment="Left" Width="130"/>
+        <Label Content="Jenny's Awnsers" Margin="36,199,291,0" VerticalAlignment="Top" Grid.Column="1" Height="26"/>
+        <ListBox x:Name="LstJennyText" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="27,225,28,24" Grid.Column="1"/>
+        <ListBox x:Name="LstLogs" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="34,225,31,24"/>
+        <Label Content="Logs" HorizontalAlignment="Left" Margin="34,199,0,0" VerticalAlignment="Top" Width="100" Height="26"/>
         <Label Content="Jenny" HorizontalAlignment="Left" Margin="34,25,0,0" VerticalAlignment="Top" Height="73" Width="228" FontSize="48"/>
     </Grid>
 </Page>

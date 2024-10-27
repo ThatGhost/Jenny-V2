@@ -39,11 +39,13 @@ namespace Jenny_V2.Pages
             {
                 TxtBoxDictation.Document.Blocks.Clear();
                 List<string> paragraphes = text.Split("$$").ToList();
-                foreach ( var paragrapheString in paragraphes )
+                foreach ( var paragraphString in paragraphes )
                 {
-                    var paragraphe = new Paragraph(new Run(paragrapheString));
-                    paragraphe.FontWeight = paragrapheString.StartsWith("#") ? FontWeights.Bold : FontWeights.Normal;
+                    bool isBold = paragraphString.StartsWith("#");
 
+                    var paragraphe = new Paragraph(new Run(paragraphString.Replace("#", "")));
+                    paragraphe.FontWeight = isBold ? FontWeights.Bold : FontWeights.Normal;
+                    
                     TxtBoxDictation.Document.Blocks.Add(paragraphe);
                 }
             });
@@ -80,7 +82,9 @@ namespace Jenny_V2.Pages
             _dictationService.AddDictiationKeywords();
             _dictationService.Start();
 
-            UpdateIsListeningUI();
+            BrushConverter bc = new BrushConverter();
+            IsListening.Fill = (Brush)bc.ConvertFrom("green")!;
+            btnToggleDictation.Content = "Stop Dictation";
         }
     }
 }

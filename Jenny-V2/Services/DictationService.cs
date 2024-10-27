@@ -19,6 +19,8 @@ namespace Jenny_V2.Services
         public DictationScentence? OnDictactionHeard;
         public bool IsDictating = false;
         public string DictationText = "";
+        public string CleanedText = "";
+        public string SummarizedText = "";
 
         private List<KeyValuePair<string[], TextCommand>> keywords = new List<KeyValuePair<string[], TextCommand>>();
 
@@ -44,6 +46,7 @@ namespace Jenny_V2.Services
         public void Start()
         {
             if (IsDictating) return;
+            IsDictating = true;
 
             _mainWindow.Navigate<DictationsPage>();
             _textToSpeechService.SpeakAsync("I am listening");
@@ -52,29 +55,115 @@ namespace Jenny_V2.Services
             _speechRecognizerService.AutoAwnser = false;
             _speechRecognizerService.onSpeechRegognized += OnDictation;
 
-            IsDictating = true;
             if (OnDictactionHeard != null)
             {
                 DictationText = GetDictationText();
-                OnDictactionHeard(DictationText);
+                CleanedText = GetCleanText();
+                SummarizedText = GetSummerizedText();
+                UpdateUI();
             }
         }
 
         public void Stop()
         {
             if (!IsDictating) return;
+            IsDictating = false;
 
             _speechRecognizerService.AutoAwnser = true;
             _speechRecognizerService.onSpeechRegognized -= OnDictation;
 
-            IsDictating = false;
             Save();
         }
 
+        public void OnDictation(string text)
+        {
+            DictationText += $" {text}";
+            UpdateUI();
+        }
+
+        public void AddDictiationKeywords()
+        {
+            keywords.Clear();
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "clean" }, TextCommand.ResearchContextDictateClean));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "cleaner" }, TextCommand.ResearchContextDictateClean));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "improve" }, TextCommand.ResearchContextDictateClean));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "summarize" }, TextCommand.ResearchContextDictateSummarize));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "shorten" }, TextCommand.ResearchContextDictateSummarize));
+
+            foreach (var keyword in keywords) _keywordService.AddTextCommand(keyword);
+        }
+
+        public void RemoveDictiationKeywords()
+        {
+            foreach(var key in keywords) _keywordService.RemoveKeyWordsOnReference(key);
+        }
+
+        private void UpdateUI()
+        {
+            if (OnDictactionHeard != null)
+                OnDictactionHeard($"#Dictated Text$${DictationText}$$#Cleaned Text$${CleanedText}$$#Summarized Text$${SummarizedText}\n\n");
+        }
+
+        #region AITransformations
+        public void CleanupText()
+        {
+            _chatGPTService.AutoSpeak = false;
+            _chatGPTService.onAIResponse += OnAiResponseCleaned;
+
+            _chatGPTService.GetAiResponse(@$"This text is spoken text by the user. can you clean it up so it makes more sense? 
+                                            only return the cleaned up text.
+                                            text: '{DictationText}'");
+        }
+
+        private void OnAiResponseCleaned(string text)
+        {
+            CleanedText = text;
+            UpdateUI();
+            SaveCleaned();
+        }
+
+        public void SummerizeText()
+        {
+            if(CleanedText == "")
+            {
+                _textToSpeechService.SpeakAsync("Please clean up the text first");
+                return;
+            }
+
+            _chatGPTService.AutoSpeak = false;
+            _chatGPTService.onAIResponse += OnAiResponseSummerize;
+
+            _chatGPTService.GetAiResponse(@$"Can you summerize this text up so it is short and digestable? 
+                                            only return the cleaned up text.
+                                            text: '{CleanedText}'");
+        }
+
+        private void OnAiResponseSummerize(string text)
+        {
+            SummarizedText = text;
+            UpdateUI();
+            SaveSummerized();
+        }
+
+        #endregion
+
+        #region IO
         public void Save()
         {
             string filePath = Path.Combine(_researchContextService.GetCurrentResearchContextFolder(), "dictation.txt");
             _fileService.SaveFileContent(filePath, DictationText);
+        }
+
+        public void SaveCleaned()
+        {
+            string filePath = Path.Combine(_researchContextService.GetCurrentResearchContextFolder(), "cleanDictation.txt");
+            _fileService.SaveFileContent(filePath, CleanedText);
+        }
+
+        public void SaveSummerized()
+        {
+            string filePath = Path.Combine(_researchContextService.GetCurrentResearchContextFolder(), "summerizedDictation.txt");
+            _fileService.SaveFileContent(filePath, SummarizedText);
         }
 
         private string GetDictationText()
@@ -83,41 +172,18 @@ namespace Jenny_V2.Services
             return _fileService.GetFileContent(filePath);
         }
 
-        public void OnDictation(string text)
+        private string GetCleanText()
         {
-            DictationText += $" {text}";
-            if(OnDictactionHeard != null) OnDictactionHeard(DictationText);
+            string filePath = Path.Combine(_researchContextService.GetCurrentResearchContextFolder(), "cleanDictation.txt");
+            return _fileService.GetFileContent(filePath);
         }
 
-        public void AddDictiationKeywords()
+        private string GetSummerizedText()
         {
-            keywords.Clear();
-            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "clean" }, TextCommand.ResearchContextDictateClean));
-            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "summurize" }, TextCommand.ResearchContextDictateSummerize));
-            
-            foreach(var keyword in keywords) _keywordService.AddTextCommand(keyword);
+            string filePath = Path.Combine(_researchContextService.GetCurrentResearchContextFolder(), "summerizedDictation.txt");
+            return _fileService.GetFileContent(filePath);
         }
 
-        public void RemoveDictiationKeywords()
-        {
-            foreach(var key in keywords) _keywordService.RemoveKeyWordsOnReference(key);
-        }
-
-        public void CleanupText()
-        {
-            _chatGPTService.AutoSpeak = false;
-            _chatGPTService.onAIResponse += OnAiResponse;
-
-            _chatGPTService.GetAiResponse(@$"This text is spoken text by the user. can you clean it up so it makes more sense? 
-                                            only return the cleaned up text.
-                                            text: '{DictationText}'");
-        }
-
-        private void OnAiResponse(string text)
-        {
-            DictationText = $"# Cleaned Text $${text}$$";
-            if (OnDictactionHeard != null) OnDictactionHeard(DictationText);
-            Save();
-        }
+        #endregion
     }
 }

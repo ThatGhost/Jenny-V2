@@ -101,7 +101,7 @@ namespace Jenny_V2.Services
         ResearchContextClose,
         ResearchContextDictate,
         ResearchContextDictateClean,
-        ResearchContextDictateSummerize,
+        ResearchContextDictateSummarize,
         ResearchContextGenerateResearch,
         ResearchContextAwnsers,
     }
