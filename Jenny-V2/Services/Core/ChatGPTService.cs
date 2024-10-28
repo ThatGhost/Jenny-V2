@@ -1,13 +1,12 @@
 ﻿using System.IO;
 using System.Speech.Synthesis;
-
 using Jenny_V2.Pages;
 using Jenny_V2.Services.UI;
 using Microsoft.Extensions.Configuration;
 using OpenAI;
 using OpenAI.Chat;
 
-namespace Jenny_V2.Services
+namespace Jenny_V2.Services.Core
 {
     public class ChatGPTService
     {
@@ -18,7 +17,7 @@ namespace Jenny_V2.Services
         private OpenAIClient client;
         private readonly TextToSpeechService _textToSpeechService;
         private readonly MainPageService _mainPageService;
-        
+
 
         public ChatGPTService(
             TextToSpeechService textToSpeechService,
@@ -42,7 +41,7 @@ namespace Jenny_V2.Services
 
         public void GetAIResponse(string prompt)
         {
-            GetAIResponse(new ChatMessage[]{ new UserChatMessage(prompt) });
+            GetAIResponse(new ChatMessage[] { new UserChatMessage(prompt) });
         }
 
         public void GetAIResponse(ChatMessage[] chatMessages)

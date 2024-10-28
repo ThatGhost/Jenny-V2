@@ -1,4 +1,4 @@
-﻿using Jenny_V2.Services;
+﻿using Jenny_V2.Services.Core;
 
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
 public class EventHandlerAttribute : Attribute

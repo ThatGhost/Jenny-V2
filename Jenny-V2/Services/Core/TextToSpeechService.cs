@@ -2,12 +2,11 @@
 using System.IO;
 
 using Google.Cloud.TextToSpeech.V1;
-
 using Microsoft.Extensions.Configuration;
 
 using NAudio.Wave;
 
-namespace Jenny_V2.Services
+namespace Jenny_V2.Services.Core
 {
     public class TextToSpeechService
     {
@@ -26,8 +25,8 @@ namespace Jenny_V2.Services
             TextToSpeechClientBuilder builder = new TextToSpeechClientBuilder();
 
             var ConfigurationBuilder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())  
-                .AddUserSecrets<App>();                        
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddUserSecrets<App>();
 
             IConfiguration configuration = ConfigurationBuilder.Build();
 

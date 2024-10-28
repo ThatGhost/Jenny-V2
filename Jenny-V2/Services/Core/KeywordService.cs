@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Jenny_V2.Services
+namespace Jenny_V2.Services.Core
 {
     public class KeywordService
     {
@@ -34,7 +34,7 @@ namespace Jenny_V2.Services
 
         public void RemoveKeyWordsOnReference(KeyValuePair<string[], TextCommand> pair)
         {
-            if(keywords.Contains(pair)) keywords.Remove(pair);
+            if (keywords.Contains(pair)) keywords.Remove(pair);
         }
 
         public TextCommand? FindTextCommand(string scentence)

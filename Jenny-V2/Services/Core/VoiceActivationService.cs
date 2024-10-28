@@ -1,6 +1,6 @@
 ﻿using System.Speech.Recognition;
 
-namespace Jenny_V2.Services
+namespace Jenny_V2.Services.Core
 {
 
     public class VoiceActivationService

@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Jenny_V2.Services
+namespace Jenny_V2.Services.Core
 {
     public class FileService
     {
 
         public FileService()
         {
-            
+
         }
 
         public string GetFileContent(string path)

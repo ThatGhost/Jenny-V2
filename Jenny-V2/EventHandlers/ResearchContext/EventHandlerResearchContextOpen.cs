@@ -1,10 +1,10 @@
 ﻿using System.IO;
 
 using Jenny_V2.Pages;
-using Jenny_V2.Services;
+using Jenny_V2.Services.Core;
 using Jenny_V2.Services.ResearchContext;
 using Jenny_V2.Services.UI;
-using static Jenny_V2.Services.ChatGPTService;
+using static Jenny_V2.Services.Core.ChatGPTService;
 
 namespace Jenny_V2.EventHandlers
 {

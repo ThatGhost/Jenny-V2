@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using Jenny_V2.Services;
+using Jenny_V2.Services.Core;
 using Jenny_V2.Services.UI;
 
 namespace Jenny_V2.Pages

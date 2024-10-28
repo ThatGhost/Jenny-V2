@@ -4,9 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-
-using Jenny_V2.Services;
-
+using Jenny_V2.Services.Core;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Jenny_V2.EventHandlers.Core

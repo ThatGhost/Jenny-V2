@@ -14,8 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
-using Jenny_V2.Services;
+using Jenny_V2.Services.Core;
 using Jenny_V2.Services.UI;
 using Microsoft.CognitiveServices.Speech;
 

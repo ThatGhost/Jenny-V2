@@ -1,5 +1,5 @@
 ﻿using Jenny_V2.Pages;
-using Jenny_V2.Services;
+using Jenny_V2.Services.Core;
 
 namespace Jenny_V2.EventHandlers.DefaultsHandlers
 {

@@ -7,7 +7,7 @@ using Jenny_V2.EventHandlers.Core;
 using Jenny_V2.Pages;
 using Jenny_V2.Services.UI;
 
-namespace Jenny_V2.Services
+namespace Jenny_V2.Services.Core
 {
     public class SpeechRecognizerService
     {
@@ -123,8 +123,8 @@ namespace Jenny_V2.Services
                 _mainPageService.Log(textCommand.ToString() ?? "");
                 return;
             }
-            
-            if(text.ToLower().Contains("jenny"))
+
+            if (text.ToLower().Contains("jenny"))
             {
                 _chatGPTService.GetAIResponse($"your name is jenny.\nCan you respond to the user in a exited and consise manner?\nuser- '{text}'");
             }

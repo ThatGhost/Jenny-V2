@@ -1,7 +1,7 @@
 ﻿using System.Speech.Recognition;
 using FuzzySharp;
 
-namespace Jenny_V2.Services
+namespace Jenny_V2.Services.Core
 {
     public class ZeroShotService
     {
