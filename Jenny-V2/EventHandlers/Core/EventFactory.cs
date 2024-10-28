@@ -22,13 +22,14 @@ namespace Jenny_V2.EventHandlers.Core
 
         public void HandleEvent(TextCommand eventType, string text)
         {
-            // Find the type that has the EventHandlerAttribute for the given eventType
             var handlerType = Assembly.GetExecutingAssembly()
                 .GetTypes()
-                .Where(t => typeof(IEventHandler).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
-                .FirstOrDefault(t => t.GetCustomAttributes(typeof(EventHandlerAttribute), false)
-                .Cast<EventHandlerAttribute>()
-                .Any(attr => attr.EventType == eventType));
+                .Where(t => typeof(IEventHandler).IsAssignableFrom(t) && !t.IsInterface)
+                .FirstOrDefault(t => 
+                    t.GetCustomAttributes(typeof(EventHandlerAttribute), false)
+                    .Cast<EventHandlerAttribute>()
+                    .Any(attr => attr.EventType == eventType)
+                );
 
             if (handlerType == null)
                 throw new InvalidOperationException($"Handler for {eventType} not found.");

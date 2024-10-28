@@ -2,7 +2,8 @@
 
 using Jenny_V2.Pages;
 using Jenny_V2.Services;
-
+using Jenny_V2.Services.ResearchContext;
+using Jenny_V2.Services.UI;
 using static Google.Rpc.Context.AttributeContext.Types;
 
 namespace Jenny_V2.EventHandlers

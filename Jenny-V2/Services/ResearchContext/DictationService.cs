@@ -1,9 +1,8 @@
 ﻿
 using System.IO;
-
 using Jenny_V2.Pages;
 
-namespace Jenny_V2.Services
+namespace Jenny_V2.Services.ResearchContext
 {
     public class DictationService
     {
@@ -95,7 +94,7 @@ namespace Jenny_V2.Services
 
         public void RemoveDictiationKeywords()
         {
-            foreach(var key in keywords) _keywordService.RemoveKeyWordsOnReference(key);
+            foreach (var key in keywords) _keywordService.RemoveKeyWordsOnReference(key);
         }
 
         private void UpdateUI()
@@ -124,7 +123,7 @@ namespace Jenny_V2.Services
 
         public void SummerizeText()
         {
-            if(CleanedText == "")
+            if (CleanedText == "")
             {
                 _textToSpeechService.SpeakAsync("Please clean up the text first");
                 return;

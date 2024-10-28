@@ -6,9 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Jenny_V2
 {
-    /// <summary>
-    /// Interaction logic for MainPage.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private readonly IServiceProvider _serviceProvider;
@@ -27,14 +24,14 @@ namespace Jenny_V2
         {
             Dispatcher.Invoke(() =>
             {
+                var oldPage = MainFrame.Content as Page;
+                if (oldPage != null && oldPage is IPageLifeTime pageExit) pageExit.OnPageExit(); 
+
                 var page = _serviceProvider.GetRequiredService<T>();
                 MainFrame.Navigate(page);
 
-                if (page is IPageNavigatedTo pageNavigation)
-                {
-                    pageNavigation.OnPageNavigatedTo();
-                }
-            }, DispatcherPriority.ApplicationIdle);
+                if (page is IPageLifeTime pageEnter) pageEnter.OnPageEnter();
+            });
         }
     }
 }

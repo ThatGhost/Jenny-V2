@@ -5,6 +5,7 @@ using Microsoft.CognitiveServices.Speech;
 using Microsoft.Extensions.Configuration;
 using Jenny_V2.EventHandlers.Core;
 using Jenny_V2.Pages;
+using Jenny_V2.Services.UI;
 
 namespace Jenny_V2.Services
 {

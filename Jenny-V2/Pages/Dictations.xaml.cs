@@ -2,13 +2,11 @@
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
-using System.Windows.Navigation;
-
-using Jenny_V2.Services;
+using Jenny_V2.Services.ResearchContext;
 
 namespace Jenny_V2.Pages
 {
-    public partial class DictationsPage : Page, IPageNavigatedTo
+    public partial class DictationsPage : Page, IPageLifeTime
     {
         private readonly DictationService _dictationService;
         private readonly MainWindow _mainWindow;
@@ -27,9 +25,6 @@ namespace Jenny_V2.Pages
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            _dictationService.Stop();
-            _dictationService.RemoveDictiationKeywords();
-
             _mainWindow.Navigate<MainPage>();
         }
 
@@ -77,7 +72,7 @@ namespace Jenny_V2.Pages
             }
         }
 
-        void IPageNavigatedTo.OnPageNavigatedTo()
+        void IPageLifeTime.OnPageEnter()
         {
             _dictationService.AddDictiationKeywords();
             _dictationService.Start();
@@ -85,6 +80,12 @@ namespace Jenny_V2.Pages
             BrushConverter bc = new BrushConverter();
             IsListening.Fill = (Brush)bc.ConvertFrom("green")!;
             btnToggleDictation.Content = "Stop Dictation";
+        }
+
+        void IPageLifeTime.OnPageExit()
+        {
+            _dictationService.Stop();
+            _dictationService.RemoveDictiationKeywords();
         }
     }
 }

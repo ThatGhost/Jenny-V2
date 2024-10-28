@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Jenny_V2.Services
+namespace Jenny_V2.Services.UI
 {
     public class MainPageService
     {
         public MainPageService()
         {
-            
+
         }
 
         public Action<string> LogNormal { get; set; }

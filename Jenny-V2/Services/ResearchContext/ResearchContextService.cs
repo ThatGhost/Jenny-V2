@@ -8,8 +8,9 @@ using System.Diagnostics;
 using Google.Api;
 using System.Xml.Linq;
 using Jenny_V2.Pages;
+using Jenny_V2.Services.UI;
 
-namespace Jenny_V2.Services
+namespace Jenny_V2.Services.ResearchContext
 {
     public class ResearchContextService
     {
@@ -24,11 +25,12 @@ namespace Jenny_V2.Services
             TextToSpeechService textToSpeechService,
             KeywordService keywordService,
             MainPageService mainPageService
-            ) 
+            )
         {
             _textToSpeechService = textToSpeechService;
             _keywordService = keywordService;
-            
+            _mainPageService = mainPageService;
+
             string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
             _folderPath = Path.Combine(appdata, ".Jenny");
@@ -46,8 +48,8 @@ namespace Jenny_V2.Services
 
         public void SetResearchContext(string name)
         {
-            if(_currentResearchContext != null) return;
-            
+            if (_currentResearchContext != null) return;
+
             _currentResearchContext = name;
             AddResearchContextKeywords();
 
@@ -63,7 +65,7 @@ namespace Jenny_V2.Services
 
         public void CloseResearchContext()
         {
-            if(_currentResearchContext == null) return;
+            if (_currentResearchContext == null) return;
 
             _keywordService.ResetKeywords();
 
@@ -96,9 +98,9 @@ namespace Jenny_V2.Services
         {
             _keywordService.AddTextCommand(new string[] { "close", "research" }, TextCommand.ResearchContextClose);
             _keywordService.AddTextCommand(new string[] { "stop", "research" }, TextCommand.ResearchContextClose);
-            _keywordService.AddTextCommand(new string[] { "start", "dictation"}, TextCommand.ResearchContextDictate);
-            _keywordService.AddTextCommand(new string[] { "start", "dictating"}, TextCommand.ResearchContextDictate);
-            _keywordService.AddTextCommand(new string[] { "start", "listening"}, TextCommand.ResearchContextDictate);
+            _keywordService.AddTextCommand(new string[] { "start", "dictation" }, TextCommand.ResearchContextDictate);
+            _keywordService.AddTextCommand(new string[] { "start", "dictating" }, TextCommand.ResearchContextDictate);
+            _keywordService.AddTextCommand(new string[] { "start", "listening" }, TextCommand.ResearchContextDictate);
         }
     }
 }

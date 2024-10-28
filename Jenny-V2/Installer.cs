@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using Jenny_V2.Pages;
 using Google.Api;
+using Jenny_V2.Services.UI;
+using Jenny_V2.Services.ResearchContext;
 
 namespace Jenny_V2
 {

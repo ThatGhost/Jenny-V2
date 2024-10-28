@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Jenny_V2.Pages
 {
-    internal interface IPageNavigatedTo
+    internal interface IPageLifeTime
     {
-        void OnPageNavigatedTo();
+        void OnPageEnter() { }
+        void OnPageExit() { }
     }
 }
