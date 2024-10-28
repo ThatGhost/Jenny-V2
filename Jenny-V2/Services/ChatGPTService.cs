@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Speech.Synthesis;
 
 using Jenny_V2.Pages;
 using Jenny_V2.Services.UI;
@@ -35,21 +36,23 @@ namespace Jenny_V2.Services
 
             IConfiguration configuration = builder.Build();
 
-            string openAIKey = configuration["OpenAI:Key"];
+            string openAIKey = configuration["OpenAI:Key"]!;
             client = new OpenAIClient(openAIKey);
         }
 
-        public void GetAiResponse(string prompt)
+        public void GetAIResponse(string prompt)
+        {
+            GetAIResponse(new ChatMessage[]{ new UserChatMessage(prompt) });
+        }
+
+        public void GetAIResponse(ChatMessage[] chatMessages)
         {
             Task.Run(() =>
             {
                 try
                 {
                     var model = client.GetChatClient("gpt-4o-mini");
-                    ChatCompletion response = model.CompleteChat(new ChatMessage[]
-                    {
-                        new UserChatMessage(prompt)
-                    });
+                    ChatCompletion response = model.CompleteChat(chatMessages);
 
                     // Return the response content
                     if (onAIResponse != null) onAIResponse.Invoke(response.Content.First().Text);

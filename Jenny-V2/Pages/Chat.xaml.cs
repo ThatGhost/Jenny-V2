@@ -1,32 +1,35 @@
-﻿using System.Runtime.CompilerServices;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using Jenny_V2.Services;
-using Jenny_V2.Services.ResearchContext;
+using Jenny_V2.Services.UI;
 
 namespace Jenny_V2.Pages
 {
-    public partial class ResearchContextChat : Page, IPageLifeTime
+    public partial class ChatPage : Page, IPageLifeTime
     {
-        private readonly ResearchChatService _researchChatService;
-        private readonly ChatGPTService _chatGPTService;
+        private readonly ChatService _chatService;
         private readonly MainWindow _mainWindow;
         private readonly SpeechRecognizerService _speechRecognizerService;
+        private readonly ChatPageService _chatPageService;
         private bool _speechRecognizerEnabled = false;
 
-        public ResearchContextChat(
-            ResearchChatService researchChatService,
+        public ChatPage(
+            ChatService researchChatService,
             ChatGPTService chatGPTService,
             MainWindow mainWindow,
-            SpeechRecognizerService speechRecognizerService
+            SpeechRecognizerService speechRecognizerService,
+            ChatPageService chatPageService
             )
         {
-            _chatGPTService = chatGPTService;
-            _researchChatService = researchChatService;
+            _chatService = researchChatService;
             _mainWindow = mainWindow;
             _speechRecognizerService = speechRecognizerService;
+            _chatPageService = chatPageService;
+
+            _chatPageService.OnMessageReceived += MessageReceived;
+            _chatPageService.OnShowUserMessage += ShowUserMessage;
 
             InitializeComponent();
         }
@@ -38,7 +41,7 @@ namespace Jenny_V2.Pages
 
         private void BtnMicrophone_Click(object sender, RoutedEventArgs e)
         {
-            if(_speechRecognizerEnabled)
+            if (_speechRecognizerEnabled)
             {
                 _speechRecognizerEnabled = false;
                 _speechRecognizerService.AutoAwnser = true;
@@ -63,49 +66,44 @@ namespace Jenny_V2.Pages
 
         private void BtnSend_Click(object sender, RoutedEventArgs e)
         {
-            _chatGPTService.GetAiResponse(TxtBoxInput.Text);
-
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                var paragraph = new Paragraph(new Run(TxtBoxInput.Text));
-                StyleParagraphe(paragraph, true);
-                RichTxtBoxChat.Document.Blocks.Add(paragraph);
-                TxtBoxInput.Text = "";
-            });
-        }
-
-        private void OnAiResponse(string awnser)
-        {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                var paragraph = new Paragraph(new Run(awnser));
-                StyleParagraphe(paragraph, false);
-                RichTxtBoxChat.Document.Blocks.Add(paragraph);
-            });
+            _chatService.SendChat(TxtBoxInput.Text);
+            ShowUserMessage(TxtBoxInput.Text);
+            TxtBoxInput.Text = "";
         }
 
         private void StyleParagraphe(Paragraph paragraph, bool sendByUser)
         {
-            BrushConverter bc = new BrushConverter();
+            BrushConverter bc = new();
             paragraph.TextAlignment = sendByUser ? TextAlignment.Right : TextAlignment.Left;
             paragraph.Foreground = Brushes.Black;
             paragraph.Background = sendByUser ? Brushes.CornflowerBlue : Brushes.LightGray;
             paragraph.Padding = new Thickness(8);
             paragraph.BorderBrush = Brushes.Black;
             paragraph.BorderThickness = new Thickness(1);
-            paragraph.Margin = new Thickness(sendByUser ? 50 : 5 , 5, sendByUser ? 5 : 50, 5);
+            paragraph.Margin = new Thickness(sendByUser ? 50 : 5, 5, sendByUser ? 5 : 50, 5);
         }
 
-        void IPageLifeTime.OnPageEnter()
+        private void MessageReceived(string message)
         {
-            _chatGPTService.AutoSpeak = false;
-            _chatGPTService.onAIResponse += OnAiResponse;
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                var paragraph = new Paragraph(new Run(message));
+                StyleParagraphe(paragraph, false);
+                RichTxtBoxChat.Document.Blocks.Add(paragraph);
+            });
         }
 
-        void IPageLifeTime.OnPageExit()
+        private void ShowUserMessage(string message)
         {
-            _chatGPTService.AutoSpeak = true;
-            _chatGPTService.onAIResponse -= OnAiResponse;
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                var paragraph = new Paragraph(new Run(message));
+                StyleParagraphe(paragraph, true);
+                RichTxtBoxChat.Document.Blocks.Add(paragraph);
+            });
         }
+
+        void IPageLifeTime.OnPageEnter() => _chatService.Start();
+        void IPageLifeTime.OnPageExit() => _chatService.Stop();
     }
 }

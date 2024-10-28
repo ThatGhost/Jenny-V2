@@ -120,13 +120,13 @@ namespace Jenny_V2.Services
             if (textCommand != null)
             {
                 _eventFactory.HandleEvent(textCommand.Value, text);
-                _mainPageService.Log(textCommand.ToString());
+                _mainPageService.Log(textCommand.ToString() ?? "");
                 return;
             }
             
             if(text.ToLower().Contains("jenny"))
             {
-                _chatGPTService.GetAiResponse($"your name is jenny.\nCan you respond to the user in a exited and consise manner?\nuser- '{text}'");
+                _chatGPTService.GetAIResponse($"your name is jenny.\nCan you respond to the user in a exited and consise manner?\nuser- '{text}'");
             }
         }
     }

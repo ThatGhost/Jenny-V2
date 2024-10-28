@@ -28,7 +28,7 @@ namespace Jenny_V2.Services
 
             VoiceActivationStop();
             _speechRecognizerService.StartSpeechRegonition();
-            _chatGPTService.GetAiResponse("greet the user and ask if you can be of assistance, in a polite and consice manner");
+            _chatGPTService.GetAIResponse("greet the user and ask if you can be of assistance, in a polite and consice manner");
         }
 
         public void ToggleVoiceActivation()

@@ -21,14 +21,13 @@ namespace Jenny_V2
             services.AddSingleton<ZeroShotService>();
             services.AddSingleton<ResearchContextService>();
             services.AddSingleton<DictationService>();
-            services.AddSingleton<MainPageService>();
 
             services.AddTransient<EventFactory>();
             services.AddTransient<VolumeService>();
             services.AddTransient<BrowserService>();
             services.AddTransient<FileService>();
             services.AddTransient<VoiceActivationService>();
-            services.AddTransient<ResearchChatService>();
+            services.AddTransient<ChatService>();
 
             InstallEventHandlers(services);
             InstallUI(services);
@@ -39,7 +38,9 @@ namespace Jenny_V2
             services.AddSingleton<MainWindow>();
             services.AddSingleton<MainPage>();
             services.AddSingleton<DictationsPage>();
-            services.AddSingleton<ResearchContextChat>();
+            services.AddSingleton<ChatPage>();
+            services.AddSingleton<MainPageService>();
+            services.AddSingleton<ChatPageService>();
         }
 
         private static void InstallEventHandlers(IServiceCollection services)

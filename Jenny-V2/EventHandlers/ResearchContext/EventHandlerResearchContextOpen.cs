@@ -53,7 +53,7 @@ namespace Jenny_V2.EventHandlers
         {
             List<string> researchContexts = _researchContextService.GetAllResearchContexts();
 
-            _chatGPTService.GetAiResponse("ask the user if they want to hear all the options, return only your question");
+            _chatGPTService.GetAIResponse("ask the user if they want to hear all the options, return only your question");
 
             _zeroShotService.AddPossibilities(new List<string> { "Yes", "No" });
             string awnser = _zeroShotService.Listen();

@@ -8,11 +8,6 @@ namespace Jenny_V2.Services.UI
 {
     public class MainPageService
     {
-        public MainPageService()
-        {
-
-        }
-
         public Action<string> LogNormal { get; set; }
         public Action<string> JennyLog { get; set; }
         public Action<string> UserLog { get; set; }

@@ -16,7 +16,7 @@ namespace Jenny_V2.EventHandlers.DefaultsHandlers
 
         public void Handle(string text)
         {
-            _mainWindow.Navigate<ResearchContextChat>();
+            _mainWindow.Navigate<ChatPage>();
         }
     }
 }

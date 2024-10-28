@@ -34,7 +34,7 @@ namespace Jenny_V2.EventHandlers.DefaultsHandlers
             {
                 _speechRecognizerService.AutoAwnser = false;
                 _chatGPTService.onAIResponse += OnAiReponse;
-                _chatGPTService.GetAiResponse("Ask the user what the volume should be set to");
+                _chatGPTService.GetAIResponse("Ask the user what the volume should be set to");
             }
             else SetVolume(int.Parse(number));
         }

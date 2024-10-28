@@ -34,7 +34,7 @@ namespace Jenny_V2.EventHandlers
         {
             _chatGPTService.onAIResponse += OnAiResponse;
             _chatGPTService.AutoSpeak = false;
-            _chatGPTService.GetAiResponse($"in this scentence is there a name for a research in the next scentence? if yes respond only with the name, if not respond only with 'no'.\nscentence: '{text}'");
+            _chatGPTService.GetAIResponse($"in this scentence is there a name for a research in the next scentence? if yes respond only with the name, if not respond only with 'no'.\nscentence: '{text}'");
         }
 
         private void OnAiResponse(string response)
@@ -44,7 +44,7 @@ namespace Jenny_V2.EventHandlers
 
             if (response.ToLower().Replace(".","") == "no")
             {
-                _chatGPTService.GetAiResponse("ask the user what the name should be of the research context, be friendly and consice, awnser only with the question");
+                _chatGPTService.GetAIResponse("ask the user what the name should be of the research context, be friendly and consice, awnser only with the question");
                 _speechRecognizerService.AutoAwnser = false;
                 _speechRecognizerService.onSpeechRegognized += OnSpeechRegognised;
             }

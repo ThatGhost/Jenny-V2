@@ -109,7 +109,7 @@ namespace Jenny_V2.Services.ResearchContext
             _chatGPTService.AutoSpeak = false;
             _chatGPTService.onAIResponse += OnAiResponseCleaned;
 
-            _chatGPTService.GetAiResponse(@$"This text is spoken text by the user. can you clean it up so it makes more sense? 
+            _chatGPTService.GetAIResponse(@$"This text is spoken text by the user. can you clean it up so it makes more sense? 
                                             only return the cleaned up text.
                                             text: '{DictationText}'");
         }
@@ -132,7 +132,7 @@ namespace Jenny_V2.Services.ResearchContext
             _chatGPTService.AutoSpeak = false;
             _chatGPTService.onAIResponse += OnAiResponseSummerize;
 
-            _chatGPTService.GetAiResponse(@$"Can you summerize this text up so it is short and digestable? 
+            _chatGPTService.GetAIResponse(@$"Can you summerize this text up so it is short and digestable? 
                                             only return the cleaned up text.
                                             text: '{CleanedText}'");
         }

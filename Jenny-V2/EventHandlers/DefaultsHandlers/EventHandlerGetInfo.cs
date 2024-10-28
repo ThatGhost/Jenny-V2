@@ -20,7 +20,7 @@ namespace Jenny_V2.EventHandlers.DefaultsHandlers
 
         public void Handle(string text)
         {
-            _chatGPTService.GetAiResponse("explain to the user that you can controll the volume, playing of media and help with research, keep it consice and friendly");
+            _chatGPTService.GetAIResponse("explain to the user that you can controll the volume, playing of media and help with research, keep it consice and friendly");
         }
     }
 }
