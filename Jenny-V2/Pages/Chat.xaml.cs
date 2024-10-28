@@ -14,6 +14,7 @@ namespace Jenny_V2.Pages
         private readonly MainWindow _mainWindow;
         private readonly SpeechRecognizerService _speechRecognizerService;
         private readonly ChatPageService _chatPageService;
+        private readonly MarkDownService _markdownService;
         private bool _speechRecognizerEnabled = false;
 
         public ChatPage(
@@ -21,13 +22,15 @@ namespace Jenny_V2.Pages
             ChatGPTService chatGPTService,
             MainWindow mainWindow,
             SpeechRecognizerService speechRecognizerService,
-            ChatPageService chatPageService
+            ChatPageService chatPageService,
+            MarkDownService markdownService
             )
         {
             _chatService = researchChatService;
             _mainWindow = mainWindow;
             _speechRecognizerService = speechRecognizerService;
             _chatPageService = chatPageService;
+            _markdownService = markdownService;
 
             _chatPageService.OnMessageReceived += MessageReceived;
             _chatPageService.OnShowUserMessage += ShowUserMessage;
@@ -88,7 +91,7 @@ namespace Jenny_V2.Pages
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                var paragraph = new Paragraph(new Run(message));
+                var paragraph = _markdownService.ConvertMarkDownIntoParaGraph(message);
                 StyleParagraphe(paragraph, false);
                 RichTxtBoxChat.Document.Blocks.Add(paragraph);
             });

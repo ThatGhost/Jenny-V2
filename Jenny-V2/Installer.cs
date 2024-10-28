@@ -29,6 +29,7 @@ namespace Jenny_V2
             services.AddTransient<FileService>();
             services.AddTransient<VoiceActivationService>();
             services.AddTransient<ChatService>();
+            services.AddTransient<MarkDownService>();
 
             InstallEventHandlers(services);
             InstallUI(services);
