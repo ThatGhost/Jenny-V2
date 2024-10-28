@@ -82,6 +82,9 @@ namespace Jenny_V2.Services
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "open", "research", "folder" }, TextCommand.ResearchContextOpenFolder));
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "open", "research" }, TextCommand.ResearchContextOpen));
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "set", "research" }, TextCommand.ResearchContextOpen));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "open", "chat" }, TextCommand.Chat));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "start", "chat" }, TextCommand.Chat));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "start", "chatting" }, TextCommand.Chat));
         }
     }
 
@@ -104,6 +107,6 @@ namespace Jenny_V2.Services
         ResearchContextDictateClean,
         ResearchContextDictateSummarize,
         ResearchContextGenerateResearch,
-        ResearchContextAwnsers,
+        Chat,
     }
 }

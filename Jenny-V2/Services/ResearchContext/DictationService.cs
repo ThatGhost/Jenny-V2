@@ -171,7 +171,7 @@ namespace Jenny_V2.Services.ResearchContext
             return _fileService.GetFileContent(filePath);
         }
 
-        private string GetCleanText()
+        public string GetCleanText()
         {
             string filePath = Path.Combine(_researchContextService.GetCurrentResearchContextFolder(), "cleanDictation.txt");
             return _fileService.GetFileContent(filePath);

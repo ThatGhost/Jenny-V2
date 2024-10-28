@@ -28,6 +28,7 @@ namespace Jenny_V2
             services.AddTransient<BrowserService>();
             services.AddTransient<FileService>();
             services.AddTransient<VoiceActivationService>();
+            services.AddTransient<ResearchChatService>();
 
             InstallEventHandlers(services);
             InstallUI(services);
@@ -38,6 +39,7 @@ namespace Jenny_V2
             services.AddSingleton<MainWindow>();
             services.AddSingleton<MainPage>();
             services.AddSingleton<DictationsPage>();
+            services.AddSingleton<ResearchContextChat>();
         }
 
         private static void InstallEventHandlers(IServiceCollection services)

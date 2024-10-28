@@ -39,23 +39,26 @@ namespace Jenny_V2.Services
             client = new OpenAIClient(openAIKey);
         }
 
-        public async void GetAiResponse(string prompt)
+        public void GetAiResponse(string prompt)
         {
-            try
+            Task.Run(() =>
             {
-                var model = client.GetChatClient("gpt-4o-mini");
-                ChatCompletion response = model.CompleteChat(new ChatMessage[]
+                try
                 {
-                    new UserChatMessage(prompt)
-                });
+                    var model = client.GetChatClient("gpt-4o-mini");
+                    ChatCompletion response = model.CompleteChat(new ChatMessage[]
+                    {
+                        new UserChatMessage(prompt)
+                    });
 
-                // Return the response content
-                if (onAIResponse != null) onAIResponse.Invoke(response.Content.First().Text);
-            }
-            catch (Exception ex)
-            {
-                _mainPageService.Log("Something Went wrong" + ex.Message);
-            }
+                    // Return the response content
+                    if (onAIResponse != null) onAIResponse.Invoke(response.Content.First().Text);
+                }
+                catch (Exception ex)
+                {
+                    _mainPageService.Log("Something Went wrong" + ex.Message);
+                }
+            });
         }
 
         private void SpeakOnAiResponse(string text)
