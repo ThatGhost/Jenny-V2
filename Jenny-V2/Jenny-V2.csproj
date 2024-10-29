@@ -11,6 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Technology-Bold.ttf" />
+    <None Remove="Resources\Technology-BoldItalic.ttf" />
+    <None Remove="Resources\Technology-Italic.ttf" />
+    <None Remove="Resources\Technology.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AudioSwitcher.AudioApi.CoreAudio" Version="3.0.3" />
     <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
     <PackageReference Include="FuzzySharp" Version="2.0.2" />
@@ -22,6 +29,13 @@
     <PackageReference Include="NAudio" Version="2.2.1" />
     <PackageReference Include="OpenAI" Version="2.0.0" />
     <PackageReference Include="System.Speech" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Technology-Bold.ttf" />
+    <Resource Include="Resources\Technology-BoldItalic.ttf" />
+    <Resource Include="Resources\Technology-Italic.ttf" />
+    <Resource Include="Resources\Technology.ttf" />
   </ItemGroup>
 
 </Project>
