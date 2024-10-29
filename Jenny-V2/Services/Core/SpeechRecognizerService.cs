@@ -22,7 +22,6 @@ namespace Jenny_V2.Services.Core
 
         public delegate void OnSpeechRegognizedEvent(string text);
         public OnSpeechRegognizedEvent onSpeechRegognized;
-        public static Action<bool> EnableSpeechRegognitionAction;
 
         public SpeechRecognizerService(
                 KeywordService keywordService,
@@ -37,7 +36,6 @@ namespace Jenny_V2.Services.Core
             _mainPageService = mainPageService;
 
             onSpeechRegognized += SpeechRegognized;
-            EnableSpeechRegognitionAction += (bool enable) => { EnableSpeechRegognition = enable; };
             InitializeSpeechRecognizer();
         }
 

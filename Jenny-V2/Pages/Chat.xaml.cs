@@ -34,6 +34,7 @@ namespace Jenny_V2.Pages
 
             _chatPageService.OnMessageReceived += MessageReceived;
             _chatPageService.OnShowUserMessage += ShowUserMessage;
+            _chatPageService.OnUpdateLabel += UpdateLabel;
 
             InitializeComponent();
         }
@@ -107,7 +108,16 @@ namespace Jenny_V2.Pages
             });
         }
 
-        void IPageLifeTime.OnPageEnter() => _chatService.Start();
+        private void UpdateLabel(string context)
+        {
+            Application.Current.Dispatcher.Invoke(() => LblContext.Content = context);
+        }
+
+        void IPageLifeTime.OnPageEnter()
+        {
+            _chatService.Start();
+            RichTxtBoxChat.Document.Blocks.Clear();
+        }
         void IPageLifeTime.OnPageExit() => _chatService.Stop();
     }
 }

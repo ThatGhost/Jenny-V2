@@ -103,5 +103,8 @@ namespace Jenny_V2.Services.ResearchContext
             _keywordService.AddTextCommand(new string[] { "start", "dictating" }, TextCommand.ResearchContextDictate);
             _keywordService.AddTextCommand(new string[] { "start", "listening" }, TextCommand.ResearchContextDictate);
         }
+
+        public bool IsInResearchContext() => _currentResearchContext != null;
+        public string? GetResearchContext() => _currentResearchContext;
     }
 }

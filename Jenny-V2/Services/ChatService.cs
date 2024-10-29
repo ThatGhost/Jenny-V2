@@ -41,6 +41,7 @@ namespace Jenny_V2.Services
         {
             _chatGPTService.AutoSpeak = false;
             _chatGPTService.onAIResponse += OnAiResponse;
+            _chatPageService.OnUpdateLabel(_researchContextService.GetResearchContext() ?? "General Chat");
             InitializeChatMessages();
         }
 
@@ -82,6 +83,12 @@ namespace Jenny_V2.Services
 
             string[] chats = chatTextRaw.Split(_separationString);
             chats = chats.Take(chats.Length).ToArray();
+
+            if(_researchContextService.IsInResearchContext())
+            {
+                string cleanedDictation = _dictationService.GetCleanText();
+                _chatMessages.Add(new UserChatMessage($"the following text is context that you might want to consider.\n\n{cleanedDictation}"));
+            }
 
             for (int i = 1; i < chats.Length; i++)
             {

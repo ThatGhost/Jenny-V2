@@ -48,7 +48,6 @@ namespace Jenny_V2.Services.ResearchContext
             if (IsDictating) return;
             IsDictating = true;
 
-            _mainWindow.Navigate<DictationsPage>();
             _textToSpeechService.SpeakAsync("I am listening");
 
             _speechRecognizerService.StartSpeechRegonition();
@@ -72,7 +71,7 @@ namespace Jenny_V2.Services.ResearchContext
             _speechRecognizerService.EnableSpeechRegognition = true;
             _speechRecognizerService.onSpeechRegognized -= OnDictation;
 
-            Save();
+            SaveDictatedText();
         }
 
         public void OnDictation(string text)
@@ -89,6 +88,9 @@ namespace Jenny_V2.Services.ResearchContext
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "improve" }, TextCommand.ResearchContextDictateClean));
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "summarize" }, TextCommand.ResearchContextDictateSummarize));
             keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "shorten" }, TextCommand.ResearchContextDictateSummarize));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "delete", "text" }, TextCommand.ResearchContextDictateClear));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "remove", "text" }, TextCommand.ResearchContextDictateClear));
+            keywords.Add(new KeyValuePair<string[], TextCommand>(new string[] { "clear", "text" }, TextCommand.ResearchContextDictateClear));
 
             foreach (var keyword in keywords) _keywordService.AddTextCommand(keyword);
         }
@@ -96,6 +98,14 @@ namespace Jenny_V2.Services.ResearchContext
         public void RemoveDictiationKeywords()
         {
             foreach (var key in keywords) _keywordService.RemoveKeyWordsOnReference(key);
+        }
+
+        public void ClearDictatedText()
+        {
+            DictationText = "";
+            SaveDictatedText();
+            UpdateUI();
+            _textToSpeechService.SpeakAsync("I have removed the dictated text");
         }
 
         private void UpdateUI()
@@ -118,6 +128,7 @@ namespace Jenny_V2.Services.ResearchContext
         private void OnAiResponseCleaned(string text)
         {
             CleanedText = text;
+            _chatGPTService.onAIResponse -= OnAiResponseCleaned;
             UpdateUI();
             SaveCleaned();
         }
@@ -141,6 +152,7 @@ namespace Jenny_V2.Services.ResearchContext
         private void OnAiResponseSummerize(string text)
         {
             SummarizedText = text;
+            _chatGPTService.onAIResponse -= OnAiResponseSummerize;
             UpdateUI();
             SaveSummerized();
         }
@@ -148,7 +160,7 @@ namespace Jenny_V2.Services.ResearchContext
         #endregion
 
         #region IO
-        public void Save()
+        public void SaveDictatedText()
         {
             string filePath = Path.Combine(_researchContextService.GetCurrentResearchContextFolder(), "dictation.txt");
             _fileService.SaveFileContent(filePath, DictationText);

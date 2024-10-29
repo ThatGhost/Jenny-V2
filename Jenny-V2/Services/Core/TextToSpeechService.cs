@@ -65,7 +65,6 @@ namespace Jenny_V2.Services.Core
             // Use MemoryStream to play audio
             Task.Run(() =>
             {
-                SpeechRecognizerService.EnableSpeechRegognitionAction(false);
                 using (var ms = new MemoryStream(response.AudioContent.ToByteArray()))
                 {
                     using (var waveStream = new WaveFileReader(ms))
@@ -81,8 +80,6 @@ namespace Jenny_V2.Services.Core
                         }
                     }
                 }
-                Thread.Sleep(1000); // whait 1s before turning it back on
-                SpeechRecognizerService.EnableSpeechRegognitionAction(true);
             });
         }
 

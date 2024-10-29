@@ -105,6 +105,7 @@ namespace Jenny_V2.Services.Core
         ResearchContextClose,
         ResearchContextDictate,
         ResearchContextDictateClean,
+        ResearchContextDictateClear,
         ResearchContextDictateSummarize,
         ResearchContextGenerateResearch,
         Chat,

@@ -22,5 +22,6 @@
         <Button x:Name="BtnSend" Margin="0,0,10,10" Click="BtnSend_Click" HorizontalAlignment="Right" Width="62" Height="60" VerticalAlignment="Bottom">
             <fa:ImageAwesome Icon="Send" VerticalAlignment="Center" HorizontalAlignment="Center" Height="42" Width="29" />
         </Button>
+        <Label x:Name="LblContext" Content="" HorizontalAlignment="Left" Margin="592,10,0,0" VerticalAlignment="Top" Height="39" Width="198"/>
     </Grid>
 </Page>

@@ -10,5 +10,6 @@ namespace Jenny_V2.Services.UI
     {
         public Action<string> OnMessageReceived;
         public Action<string> OnShowUserMessage;
+        public Action<string> OnUpdateLabel;
     }
 }
