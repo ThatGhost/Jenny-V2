@@ -45,7 +45,7 @@ namespace Jenny_V2.EventHandlers
             if (response.ToLower().Replace(".","") == "no")
             {
                 _chatGPTService.GetAIResponse("ask the user what the name should be of the research context, be friendly and consice, awnser only with the question");
-                _speechRecognizerService.AutoAwnser = false;
+                _speechRecognizerService.EnableSpeechRegognition = false;
                 _speechRecognizerService.onSpeechRegognized += OnSpeechRegognised;
             }
             else
@@ -58,7 +58,7 @@ namespace Jenny_V2.EventHandlers
 
         private void OnSpeechRegognised(string text)
         {
-            _speechRecognizerService.AutoAwnser = true;
+            _speechRecognizerService.EnableSpeechRegognition = true;
             _speechRecognizerService.onSpeechRegognized -= OnSpeechRegognised;
 
             text = text.ToLower().Replace("it ","").Replace("name ","").Replace("call ","").Replace(".","");

@@ -52,7 +52,7 @@ namespace Jenny_V2.Services.ResearchContext
             _textToSpeechService.SpeakAsync("I am listening");
 
             _speechRecognizerService.StartSpeechRegonition();
-            _speechRecognizerService.AutoAwnser = false;
+            _speechRecognizerService.EnableSpeechRegognition = false;
             _speechRecognizerService.onSpeechRegognized += OnDictation;
 
             if (OnDictactionHeard != null)
@@ -69,7 +69,7 @@ namespace Jenny_V2.Services.ResearchContext
             if (!IsDictating) return;
             IsDictating = false;
 
-            _speechRecognizerService.AutoAwnser = true;
+            _speechRecognizerService.EnableSpeechRegognition = true;
             _speechRecognizerService.onSpeechRegognized -= OnDictation;
 
             Save();

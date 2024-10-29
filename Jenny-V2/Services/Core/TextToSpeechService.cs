@@ -10,14 +10,14 @@ namespace Jenny_V2.Services.Core
 {
     public class TextToSpeechService
     {
-        private TextToSpeechClient textToSpeechClient;
-        private VoiceSelectionParams voiceSelectionParams;
-        private readonly AudioConfig audioConfig;
+        private TextToSpeechClient _textToSpeechClient;
+        private VoiceSelectionParams _voiceSelectionParams;
+        private readonly AudioConfig _audioConfig;
 
         public TextToSpeechService()
         {
-            audioConfig = new AudioConfig { AudioEncoding = AudioEncoding.Linear16 };
-            voiceSelectionParams = new VoiceSelectionParams
+            _audioConfig = new AudioConfig { AudioEncoding = AudioEncoding.Linear16 };
+            _voiceSelectionParams = new VoiceSelectionParams
             {
                 LanguageCode = "en-US",
                 SsmlGender = SsmlVoiceGender.Female,
@@ -31,13 +31,13 @@ namespace Jenny_V2.Services.Core
             IConfiguration configuration = ConfigurationBuilder.Build();
 
             builder.ApiKey = configuration["Google:Key"];
-            textToSpeechClient = builder.Build();
+            _textToSpeechClient = builder.Build();
         }
 
         public void Speak(string text)
         {
             var input = new SynthesisInput { Text = text };
-            var response = textToSpeechClient.SynthesizeSpeech(input, voiceSelectionParams, audioConfig);
+            var response = _textToSpeechClient.SynthesizeSpeech(input, _voiceSelectionParams, _audioConfig);
 
             // Use MemoryStream to play audio
             using (var ms = new MemoryStream(response.AudioContent.ToByteArray()))
@@ -60,11 +60,12 @@ namespace Jenny_V2.Services.Core
         public void SpeakAsync(string text)
         {
             var input = new SynthesisInput { Text = text };
-            var response = textToSpeechClient.SynthesizeSpeech(input, voiceSelectionParams, audioConfig);
+            var response = _textToSpeechClient.SynthesizeSpeech(input, _voiceSelectionParams, _audioConfig);
 
             // Use MemoryStream to play audio
             Task.Run(() =>
             {
+                SpeechRecognizerService.EnableSpeechRegognitionAction(false);
                 using (var ms = new MemoryStream(response.AudioContent.ToByteArray()))
                 {
                     using (var waveStream = new WaveFileReader(ms))
@@ -80,6 +81,8 @@ namespace Jenny_V2.Services.Core
                         }
                     }
                 }
+                Thread.Sleep(1000); // whait 1s before turning it back on
+                SpeechRecognizerService.EnableSpeechRegognitionAction(true);
             });
         }
 

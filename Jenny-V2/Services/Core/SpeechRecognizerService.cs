@@ -18,10 +18,11 @@ namespace Jenny_V2.Services.Core
 
         private SpeechRecognizer speechRecognizer;
         public bool IsRegonizing { get; private set; }
-        public bool AutoAwnser = true;
+        public bool EnableSpeechRegognition = true;
 
         public delegate void OnSpeechRegognizedEvent(string text);
         public OnSpeechRegognizedEvent onSpeechRegognized;
+        public static Action<bool> EnableSpeechRegognitionAction;
 
         public SpeechRecognizerService(
                 KeywordService keywordService,
@@ -36,6 +37,7 @@ namespace Jenny_V2.Services.Core
             _mainPageService = mainPageService;
 
             onSpeechRegognized += SpeechRegognized;
+            EnableSpeechRegognitionAction += (bool enable) => { EnableSpeechRegognition = enable; };
             InitializeSpeechRecognizer();
         }
 
@@ -112,7 +114,7 @@ namespace Jenny_V2.Services.Core
 
         private void SpeechRegognized(string text)
         {
-            if (text.Trim() == "" || !AutoAwnser) return;
+            if (text.Trim() == "" || !EnableSpeechRegognition) return;
             _mainPageService.UserLog(text);
 
             TextCommand? textCommand = _keywordService.FindTextCommand(text);

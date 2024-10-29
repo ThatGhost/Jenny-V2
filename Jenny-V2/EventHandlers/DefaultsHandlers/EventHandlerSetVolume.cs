@@ -33,7 +33,7 @@ namespace Jenny_V2.EventHandlers.DefaultsHandlers
             string number = Regex.Match(text, @"\d+").Value;
             if (number == "")
             {
-                _speechRecognizerService.AutoAwnser = false;
+                _speechRecognizerService.EnableSpeechRegognition = false;
                 _chatGPTService.onAIResponse += OnAiReponse;
                 _chatGPTService.GetAIResponse("Ask the user what the volume should be set to");
             }
@@ -55,7 +55,7 @@ namespace Jenny_V2.EventHandlers.DefaultsHandlers
             if (number == "") _mainPageService.JennyLog("Sorry i didnt catch that try it again");
             else SetVolume(int.Parse(number));
 
-            _speechRecognizerService.AutoAwnser = true;
+            _speechRecognizerService.EnableSpeechRegognition = true;
         }
 
         private void OnAiReponse(string text)

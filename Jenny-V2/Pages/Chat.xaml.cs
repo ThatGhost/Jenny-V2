@@ -48,7 +48,7 @@ namespace Jenny_V2.Pages
             if (_speechRecognizerEnabled)
             {
                 _speechRecognizerEnabled = false;
-                _speechRecognizerService.AutoAwnser = true;
+                _speechRecognizerService.EnableSpeechRegognition = true;
                 _speechRecognizerService.onSpeechRegognized -= OnRegognizedInput;
                 IconMicrophone.Icon = FontAwesome.WPF.FontAwesomeIcon.MicrophoneSlash;
                 IconMicrophone.Foreground = Brushes.Black;
@@ -56,7 +56,7 @@ namespace Jenny_V2.Pages
             else
             {
                 _speechRecognizerEnabled = true;
-                _speechRecognizerService.AutoAwnser = false;
+                _speechRecognizerService.EnableSpeechRegognition = false;
                 _speechRecognizerService.onSpeechRegognized += OnRegognizedInput;
                 IconMicrophone.Icon = FontAwesome.WPF.FontAwesomeIcon.Microphone;
                 IconMicrophone.Foreground = Brushes.LightBlue;
